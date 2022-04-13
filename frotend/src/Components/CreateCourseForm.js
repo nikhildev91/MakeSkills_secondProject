@@ -1,11 +1,14 @@
 import React from 'react'
 import { Form, Row, Col, Button } from 'react-bootstrap'
+import { ToastContainer } from 'react-toastify'
+import { Spin } from 'antd'
 import FormContainer from './FormContainer'
 
 const CreateCourseForm = (props) => {
   console.log(props.title);
   return (
     <FormContainer>
+      <ToastContainer />
       <h1 className='text-center'>Create Course</h1>
       <Form onSubmit={props.handleSubmit}>
         <Form.Group className='mt-3'>
@@ -14,11 +17,11 @@ const CreateCourseForm = (props) => {
         </Form.Group>
         <Form.Group className='mt-3'>
           <Form.Label>Desctiption</Form.Label>
-          <Form.Control type='text' as='textarea' placeholder='Enter Course Description' />
+          <Form.Control type='text' as='textarea' placeholder='Enter Course Description' value={props.description} onChange={ e => props.setDescription(e.target.value)} />
         </Form.Group>
         <Form.Group className='mt-3'>
           <Form.Label>Category</Form.Label>
-          <Form.Control type='text' placeholder='Enter Course Category' />
+          <Form.Control type='text' placeholder='Enter Course Category' value={props.category} onChange={ e => props.setCategory(e.target.value)} />
         </Form.Group>
         <Form.Group className='mt-3'>
           <Row>
@@ -29,18 +32,21 @@ const CreateCourseForm = (props) => {
               </Form.Select>
             </Col>
             <Col md={6}>
-              <Form.Control type='text' placeholder='Enter Price'/>
+              <Form.Control type='text' placeholder='Enter Price' value={props.price} onChange={ e => props.setPrice(e.target.value)}/>
             </Col>                 
           </Row>
         </Form.Group>
         <Form.Group className='mt-3'>
           <Row>
-          <Col sm={12}>
-              Image
-            </Col>
-              <Form.Label className='btn btn-outline-success btn-block'>
-                Upload Image
-                <Form.Control type='files' accept='image/jpg'  hidden/>
+              {props.preview && 
+              <>
+              <img src={props.preview} alt={props.UploadButtonText} className="justify-content-center"/>
+              <Form.Label className='btn btn-outline-danger mt-3' onClick={props.handleImageRemove} >Remove Image</Form.Label>
+              </>}
+           
+              <Form.Label className='btn btn-outline-success btn-block btn-block' >
+                  {props.loading ? <Spin /> : props.UploadButtonText}
+                <Form.Control type='file' accept='image/jpg' onChange={props.handleImage}  hidden/>
               </Form.Label>
           </Row>
         </Form.Group>
