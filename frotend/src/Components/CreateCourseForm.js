@@ -2,14 +2,18 @@ import React from 'react'
 import { Form, Row, Col, Button } from 'react-bootstrap'
 import { ToastContainer } from 'react-toastify'
 import { Spin } from 'antd'
+import { useSelector } from 'react-redux'
 import FormContainer from './FormContainer'
+import Message from './Message'
 
 const CreateCourseForm = (props) => {
-  console.log(props.title);
+  const courseCreate =  useSelector( state => state.courseCreate)
+  const { error } = courseCreate
   return (
     <FormContainer>
       <ToastContainer />
       <h1 className='text-center'>Create Course</h1>
+      { error && <Message variant='danger'>{error}</Message>}
       <Form onSubmit={props.handleSubmit}>
         <Form.Group className='mt-3'>
           <Form.Label>Title</Form.Label>

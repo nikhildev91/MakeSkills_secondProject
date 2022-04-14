@@ -1,13 +1,17 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import Resizer from 'react-image-file-resizer'
 import CreateCourseForm from '../Components/CreateCourseForm'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { COURSE_CREATE_RESET } from '../Constants/CourseConstants'
+import { createCourseAction } from '../Actions/CourseActions'
 
 
 const CreateCourse = () => {
   const dispatch = useDispatch()
+  const naviagate = useNavigate()
 
   const [ title, setTitle ] = useState('')
   const [ description, setDescription ] = useState('')
@@ -19,6 +23,27 @@ const CreateCourse = () => {
   const [ UploadButtonText, setUploadButtonText ] = useState('Upload Thumbnail')
   const [ preview, setPreview ] = useState('')
   const [ loading, setLoading ] = useState(false)
+
+  const userLogin = useSelector( state => state.userLogin)
+  const { userInfo } = userLogin
+
+  const courseCreate = useSelector( state => state.courseCreate)
+  const {
+    error : errorCreate,
+    success : successCreate
+  } = courseCreate
+
+  useEffect(() => {
+    dispatch( { type : COURSE_CREATE_RESET })
+    if(!userInfo.isInstructor){
+      naviagate('/login')
+    }
+
+    if(successCreate) {
+      naviagate('/')
+    }
+
+  }, [ dispatch, userInfo, successCreate ])
 
 
   // create course Thumbnail handle
@@ -62,7 +87,7 @@ const CreateCourse = () => {
   // create course Form Submit
   const handleSubmit = (e) => {
     e.preventDefault()
-    // dispatch()
+    dispatch(createCourseAction( title, description, category, paid, price, image ))
   }
   return (
     <CreateCourseForm 
@@ -84,7 +109,7 @@ const CreateCourse = () => {
       toast = {toast}
       loading = {loading}
       preview = {preview}
-    handleImageRemove = {handleImageRemove}
+      handleImageRemove = {handleImageRemove}
       />
   )
 }

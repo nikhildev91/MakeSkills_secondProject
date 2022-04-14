@@ -1,9 +1,11 @@
 import asyncHandler from 'express-async-handler'
 import AWS from 'aws-sdk'
 import { nanoid } from 'nanoid'
+import slugify from 'slugify'
+import Course from '../models/courseModel.js'
 
 const awsConfig = {
-//   paster
+    // pasted
 }
 const S3 = new AWS.S3(awsConfig)
 
@@ -71,4 +73,102 @@ const removeCourseImage = async ( req, res ) => {
     }
 } 
 
-export { uploadCourseImage, removeCourseImage }
+
+/// @desc Create Course and upload to database
+// @router /api/instructors/create-course
+// @access PRIVATE
+
+const createCourse = asyncHandler( async ( req, res ) => {
+    const { title, description, category, paid, price, image } = req.body
+    const instructorId = req.instr._id
+
+    // is course already existed and create course to database
+    const alreadyExist = await Course.findOne({
+        slug : slugify(req.body.title.toLowerCase())
+    })
+    if(alreadyExist){
+        res.status(400)
+         throw new Error ("Title Already Exists!..") 
+    } else{
+        const  course = await Course.create({
+            title, 
+            description, 
+            category,
+            slug : slugify(title),
+            paid, 
+            price, 
+            image,
+            instructorId
+        })
+
+        if(course) {
+            console.log(course);
+            res.json({
+                _id : course._id,
+                title : course.title, 
+                description : course.description, 
+                category : course.category, 
+                paid : course.paid, 
+                price : course.price, 
+                image : course.image,
+                instructor : course.instructor
+            })
+        } else {
+            res.status(400)
+            throw new Error ("Create Course Failed. Try it later")
+        }
+    }
+
+})
+
+
+
+/// @desc Instructors courses List
+// @router /api/instructors/courses
+// @access PRIVATE
+
+const courseLists = asyncHandler( async ( req, res ) => {
+    const instructorId = req.instr._id
+    const courses = await Course.find({ instructorId }).sort({ createdAt : -1 })
+    if(courses){
+        res.json(courses)
+    } else {
+        res.status(400)
+        throw new Error('Course Listed Failed!..')
+    }
+})
+
+/// @desc Instructors courses Details
+// @router /api/instructors/course-view/:slug
+// @access PRIVATE
+
+const viewCourse = asyncHandler( async ( req, res ) => {
+    let course = await Course.findOne({ slug : req.params.slug })
+    res.json(course)
+})
+
+
+/// @desc Instructors courses Details
+// @router /api/instructors/course-view/:slug
+// @access PRIVATE
+
+const updateCourse = asyncHandler( async (req, res) => {
+    const { slug } = req.params
+    const course = await Course.findOne({ slug })
+    const courseInstructorId = toString(course.instructor)
+    const loggedInInstructorId = toString(req.instr._id)
+            
+    if(courseInstructorId !== loggedInInstructorId){
+        res.status(400)
+        throw new Error ("Unauthorized")
+    }
+    const updated = await Course.findOneAndUpdate( { slug }, req.body, { new : true }).exec();
+    if(updated){
+        res.json(updated)
+    }else{
+        res.status(400)
+        throw new Error('Course Updated Failed!..')
+    }       
+})
+
+export { uploadCourseImage, removeCourseImage, createCourse, courseLists, viewCourse, updateCourse }
