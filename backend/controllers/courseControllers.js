@@ -1,11 +1,12 @@
 import asyncHandler from 'express-async-handler'
 import AWS from 'aws-sdk'
 import { nanoid } from 'nanoid'
+import { readFileSync} from 'fs'
 import slugify from 'slugify'
 import Course from '../models/courseModel.js'
 
 const awsConfig = {
-    // pasted
+// /pasteid
 }
 const S3 = new AWS.S3(awsConfig)
 
@@ -171,4 +172,61 @@ const updateCourse = asyncHandler( async (req, res) => {
     }       
 })
 
-export { uploadCourseImage, removeCourseImage, createCourse, courseLists, viewCourse, updateCourse }
+
+const uploadVideo = async (req, res ) => {
+    try{
+        const { video } = req.files
+        if(!video) return  res.status(400).send("No Video")
+
+        // video params
+        const params = {
+             Bucket : "makeskills-bucket",
+             Key : `${nanoid()}.${video.type.split("/")[1]}`, // video/mp4
+             Body : readFileSync(video.path),
+             ACL: 'public-read',
+             ContentType: video.type
+        }
+
+        // upload video to S3
+
+        S3.upload(params, (err, data) => {
+            if(err){
+                console.log(err);
+                res.sendStatus(400)
+            }
+            // console.log(data);
+            res.send(data)
+        })
+
+     } catch(error){
+         console.log(error);
+     }
+}
+
+const removeVideo = async ( req, res ) => {
+    try{
+        const  video  = req.filess
+        console.log(video, "na;sdvaksvanavnlda,gvaa");
+        if(!video) return  res.status(400).send("No Video")
+
+        // video params
+        const params = {
+             Bucket : "makeskills-bucket",
+             Key : video.Key
+        }
+
+        // remove video from S3
+        S3.deleteObject(params, (err, data) => {
+            if(err){
+                console.log(err);
+                res.sendStatus(400)
+            }
+            console.log(data);
+            res.send({ ok : true})
+        })
+
+     } catch(error){
+         console.log(error);
+     }
+}
+export { uploadCourseImage, removeCourseImage, createCourse, courseLists, viewCourse, updateCourse, uploadVideo, removeVideo }

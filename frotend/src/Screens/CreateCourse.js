@@ -87,6 +87,9 @@ const CreateCourse = () => {
   // create course Form Submit
   const handleSubmit = (e) => {
     e.preventDefault()
+    if(!paid){
+      setPrice("0")
+    }
     dispatch(createCourseAction( title, description, category, paid, price, image ))
   }
   return (

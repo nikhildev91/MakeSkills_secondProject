@@ -1,4 +1,5 @@
 import express from "express";
+import formidable from 'express-formidable'
 import { instructorProtect } from "../middlewares/authMiddlewares.js";
 import { 
     uploadCourseImage, 
@@ -6,7 +7,9 @@ import {
     createCourse, 
     courseLists, 
     viewCourse,
-    updateCourse
+    updateCourse,
+    uploadVideo,
+    removeVideo
         } from "../controllers/courseControllers.js";
 
 const router = express.Router()
@@ -17,6 +20,8 @@ const router = express.Router()
 
 router.post('/course/upload-image', uploadCourseImage)
 router.post('/course/remove-image', removeCourseImage)
+router.post('/upload-video', formidable(), uploadVideo)
+router.post('/remove-video', removeVideo)
 router.post('/create-course',instructorProtect, createCourse)
 router.get('/courses', instructorProtect, courseLists)
 router.get('/course-view/:slug', instructorProtect, viewCourse)
