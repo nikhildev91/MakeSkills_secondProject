@@ -15,7 +15,7 @@ const CourseCards = (props) => {
                                     <div class="card-flyer">
                                         <div class="text-box">
                                             <div class="image-box">
-                                                <img src={course.image && course.image.Location} alt={course.title} />
+                                                <img src={course.image && course.image} alt={course.title} />
                                             </div>
                                             <div class="text-container">
                                                 <h6>{course.title}</h6>

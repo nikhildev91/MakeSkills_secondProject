@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage'
+import storage from '../firebase'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Swal from 'sweetalert2'
+import { List, Avatar } from 'antd'
+import Item from "antd/lib/list/Item";
 import { Container, Row, Col, Button } from 'react-bootstrap'
-import { courseViewAction } from '../Actions/CourseActions'
+import { courseViewAction, createLessonAction } from '../Actions/CourseActions'
 import AddLessonForm from '../Components/InstructorComponents/Modal/AddLessonForm'
+import { LESSON_CREATE_RESET } from '../Constants/CourseConstants'
 
 const InstructorCourseView = () => {
     const { slug } = useParams()
@@ -16,56 +20,56 @@ const InstructorCourseView = () => {
     const [ showForm, setShowForm ] = useState(false)
     const [ name, setName ] = useState('')
     const [ content, setContent ] = useState('')
-    const [ video, setVideo ] = useState({})
+    const [ video, setVideo ] = useState('')
     const [ preview, setPreview ] = useState('')
     const [ uploadButtonText, setUploadButtonText ] = useState('Upload Content (only MP4 videos)')
     const [ progress, setProgress ] = useState('')
 
     // handleVideo
     const handleVideo = async (e) => {
-        try{
-            const file = e.target.files[0]
-            
-            // send video to backend using form data
-            // save progress bar
-            setUploadButtonText("Uploading.....")
-            const videoData = new FormData()
-            videoData.append('video', file)
-            const { data } = await axios.post('/api/instructors/upload-video', videoData, {
-                onUploadProgress:(e) => {
-                    setProgress(Math.round((100 * e.loaded)/ e.total))
-                }
-            })
-
-            // once response in recevied
-            console.log(data);
-            setVideo(data)
-            setPreview(data.Location)
-            setUploadButtonText(file.name)
-            
-        } catch(error){
-            console.log(error);
-            console.log("Video upload failed");
-          
-        }
+        const file = e.target.files[0]
+        const fileName = new Date().getTime() + file.name
+        const storageRef = ref( storage, `/lessons/${fileName}` )
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+                const uploaded = Math.floor(
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                )
+                setProgress(uploaded)
+            },
+            (error) => {
+                console.log(error);
+            },
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                    setVideo(url)
+                    setPreview(url)
+                    setUploadButtonText(file.name)
+                })
+            }
+        )
     }
 
     // delete video
     const deleteVideo = async () => {
-        try{
-            await axios.post('/api/instructors/remove-video', video);
-            setProgress(0)
-            setVideo({})
-            console.log(video);
-            setUploadButtonText('Upload another video')
-          } catch ( error ) {
-            console.log(error);
-          }
+        const desertRef = ref(storage, video);
+        deleteObject(desertRef).then(() => {
+        setPreview('')
+        setVideo('')
+        setUploadButtonText("Upload Another Video")
+        }).catch((error) => {
+        console.log(error);
+        });
     }
 
     // handle Form submit
     const handleSubmit = (e) => {
         e.preventDefault()
+        if(video){
+            dispatch(createLessonAction(name, content, video, slug ))
+        }
     }
 
     /***********************************************/
@@ -76,12 +80,30 @@ const InstructorCourseView = () => {
     const courseViewDetails = useSelector( state => state.courseViewDetails )
     const { courseDetails } = courseViewDetails
 
+    const lessonCreate = useSelector( state => state.lessonCreate )
+    const {
+        success : successCreate
+    } = lessonCreate
+
     useEffect(() => {
+        dispatch({
+            type : LESSON_CREATE_RESET
+        })
         if(userInfo && !userInfo.isInstructor ){
             navigate('/login')
         }
         dispatch(courseViewAction(slug))
-    }, [ userInfo, dispatch ])
+            console.log(successCreate);
+        if(successCreate) {
+            setShowForm(false)
+            setPreview('')
+            setVideo({})
+            setName('')
+            setContent('')
+            setUploadButtonText('Upload Content (only MP4 videos)')
+            navigate(`/instructor/course-view/${slug}`)
+        }
+    }, [ userInfo, dispatch, successCreate ])
 
     const handleEdit = () => {
         const swalWithBootstrapButtons = Swal.mixin({
@@ -103,11 +125,6 @@ const InstructorCourseView = () => {
           }).then((result) => {
             if (result.isConfirmed) {
                 navigate(`/instructor/edit-course/${slug}`)
-            //   swalWithBootstrapButtons.fire(
-            //     'Deleted!',
-            //     'Your file has been deleted.',
-            //     'success'
-            //   )
             } else if (
               /* Read more about handling dismissals below */
               result.dismiss === Swal.DismissReason.cancel
@@ -135,7 +152,7 @@ const InstructorCourseView = () => {
                             <h1 className='mt-3' style={{ color : "white"}}>₹ {courseDetails && courseDetails.price}</h1>
                         </Col>
                         <Col md={6} style={{ color : "white"}} >
-                            <img src={courseDetails && courseDetails.image && courseDetails.image.Location } alt={courseDetails && courseDetails.title} className="w-100 d-flex justify-content-center"/>
+                            <img src={courseDetails && courseDetails.image } alt={courseDetails && courseDetails.title} className="w-100 d-flex justify-content-center"/>
                         </Col>
                     </Row>
                 </div>
@@ -169,6 +186,20 @@ const InstructorCourseView = () => {
             uploadButtonText = {uploadButtonText}
             deleteVideo = {deleteVideo}
         />
+        <Row className='pb-5'>
+        <Col className='lesson-list'>
+          <h4>{courseDetails && courseDetails.lessons && courseDetails.lessons.length } Lessons</h4>
+          <List 
+                  itemLayout='horizontal'
+                  dataSource={courseDetails && courseDetails.lessons}
+                  renderItem={(item, index) => (
+                    <Item>
+                      <Item.Meta avatar={<Avatar>{index + 1}</Avatar>} title={item.name} ></Item.Meta>
+                    </Item>
+                  )}
+                ></List>
+        </Col>
+      </Row>
     </Container>
   )
 }

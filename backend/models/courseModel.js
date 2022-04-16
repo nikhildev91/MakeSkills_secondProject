@@ -16,7 +16,7 @@ const lessonSchema = mongoose.Schema({
         type : String,
         minlength : 5,
     },
-    video : {},
+    video : String,
     free_preview : {
         type : Boolean,
         default : false
@@ -44,7 +44,7 @@ const courseSchema = mongoose.Schema({
         default : 499,
         required : true
     },
-    image :{},
+    image : String,
     category : String,
     published : {
         type : Boolean,

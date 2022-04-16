@@ -4,8 +4,6 @@ import User from '../models/userModels.js'
 
 const instructorProtect = asyncHandler( async ( req, res, next ) => {
     let token
-    console.log("vajju");
-    console.log(req.headers);
     // console.log(req.headers.authorization, " &&", req.headers.authorization.startsWith('Bearer '));
     if ( req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         console.log("yes");

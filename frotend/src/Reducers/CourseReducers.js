@@ -12,7 +12,15 @@ import {
     COURSE_UPDATE_REQUEST,
     COURSE_UPDATE_SUCCESS,
     COURSE_UPDATE_FAIL,
-    COURSE_UPDATE_RESET
+    COURSE_UPDATE_RESET,
+    LESSON_CREATE_REQUEST,
+    LESSON_CREATE_SUCCESS,
+    LESSON_CREATE_FAIL,
+    LESSON_CREATE_RESET,
+    LESSON_UPDATE_REQUEST,
+    LESSON_UPDATE_SUCCESS,
+    LESSON_UPDATE_FAIL,
+    LESSON_UPDATE_RESET
 } from '../Constants/CourseConstants'
 
 export const courseCreateReducer = (state = { }, action ) => {
@@ -66,6 +74,38 @@ export const courseUpdateReducer = (state = { }, action ) => {
         case COURSE_UPDATE_FAIL : 
             return { loading : false, error : action.payload }
         case COURSE_UPDATE_RESET :
+            return {}
+        default : 
+            return state
+    }
+}
+
+
+export const lessonCreateReducer = (state = { }, action ) => {
+    switch ( action.type ) {
+        case LESSON_CREATE_REQUEST :
+            return { loading : true }
+        case LESSON_CREATE_SUCCESS :
+            return { loading : false, success : true, course : action.payload }
+        case LESSON_CREATE_FAIL : 
+            return { loading : false, error : action.payload }
+        case LESSON_CREATE_RESET :
+            return {}
+        default : 
+            return state
+    }
+}
+
+
+export const lessonUpdateReducer = (state = { }, action ) => {
+    switch ( action.type ) {
+        case LESSON_UPDATE_REQUEST :
+            return { loading : true }
+        case LESSON_UPDATE_SUCCESS :
+            return { loading : false, success : true, course : action.payload }
+        case LESSON_UPDATE_FAIL : 
+            return { loading : false, error : action.payload }
+        case LESSON_UPDATE_RESET :
             return {}
         default : 
             return state

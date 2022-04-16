@@ -11,7 +11,13 @@ import {
     COURSE_VIEW_FAIL,
     COURSE_UPDATE_REQUEST,
     COURSE_UPDATE_SUCCESS,
-    COURSE_UPDATE_FAIL
+    COURSE_UPDATE_FAIL,
+    LESSON_CREATE_REQUEST,
+    LESSON_CREATE_SUCCESS,
+    LESSON_CREATE_FAIL,
+    LESSON_UPDATE_REQUEST,
+    LESSON_UPDATE_SUCCESS,
+    LESSON_UPDATE_FAIL
 } from '../Constants/CourseConstants'
 
 export const createCourseAction = (title, description, category, paid, price, image) => async ( dispatch, getState ) => {
@@ -30,7 +36,6 @@ export const createCourseAction = (title, description, category, paid, price, im
                 'Content-Type' : 'application/json'
             }
         }
-        console.log(config);
 
         const { data } = await axios.post(`/api/instructors/create-course`, { title, description, category, paid, price, image }, config)
 
@@ -150,5 +155,75 @@ export const courseUpdateAction = (title, description, category, paid, price, im
         })
     }
 }
+
+export const createLessonAction = (name, content, video, slug) => async ( dispatch, getState ) => {
+    try{
+        dispatch({
+            type : LESSON_CREATE_REQUEST
+        })
+
+        const {
+            userLogin : { userInfo }
+        } = getState()
+
+        const config = {
+            headers : {
+                Authorization : `Bearer ${userInfo.token}`,
+                'Content-Type' : 'application/json'
+            }
+        }
+
+        const { data } = await axios.post(`/api/instructors/add-lesson/${slug}`, { name, content, video }, config)
+
+        dispatch({
+            type : LESSON_CREATE_SUCCESS,
+            payload : data
+        })
+    }catch(error) {
+        dispatch({
+            type : LESSON_CREATE_FAIL,
+            payload :
+            error.response && error.response.data.message ?
+            error.response.data.message :
+            error.message
+        })
+    }
+}
+
+export const updateLessonAction = (current, slug ) => async ( dispatch, getState ) => {
+    try{
+        dispatch({
+            type : LESSON_UPDATE_REQUEST
+        })
+
+        const {
+            userLogin : { userInfo }
+        } = getState()
+
+        const config = {
+            headers : {
+                Authorization : `Bearer ${userInfo.token}`,
+                'Content-Type' : 'application/json'
+            }
+        }
+
+        const { data } = await axios.put(`/api/instructors/update-lesson/${slug}/${current._id}`, { current }, config)
+
+        dispatch({
+            type : LESSON_UPDATE_SUCCESS,
+            payload : data
+        })
+    }catch(error) {
+        dispatch({
+            type : LESSON_UPDATE_FAIL,
+            payload :
+            error.response && error.response.data.message ?
+            error.response.data.message :
+            error.message
+        })
+    }
+}
+
+
 
 

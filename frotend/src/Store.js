@@ -2,7 +2,14 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { userLoginReducer, userRegisterReducer } from './Reducers/UserReducers'
-import { courseCreateReducer, courseListReducer, courseUpdateReducer, courseViewReducer } from './Reducers/CourseReducers'
+import { 
+    courseCreateReducer, 
+    courseListReducer, 
+    courseUpdateReducer, 
+    courseViewReducer, 
+    lessonCreateReducer, 
+    lessonUpdateReducer
+} from './Reducers/CourseReducers'
 
 
 const reducer = combineReducers({
@@ -12,7 +19,10 @@ const reducer = combineReducers({
     courseCreate : courseCreateReducer,
     courseList : courseListReducer,
     courseViewDetails : courseViewReducer,
-    courseUpdate : courseUpdateReducer
+    courseUpdate : courseUpdateReducer,
+    
+    lessonCreate : lessonCreateReducer,
+    lessonUpdate : lessonUpdateReducer
 })
 
 const userInfoFromStorage = localStorage.getItem('userInfo') 

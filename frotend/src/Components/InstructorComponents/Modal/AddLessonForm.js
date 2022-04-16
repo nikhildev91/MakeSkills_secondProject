@@ -1,5 +1,6 @@
 import React from 'react'
-import { Form, Modal, Row } from 'react-bootstrap'
+import { Button, Form, Modal, Row } from 'react-bootstrap'
+import ReactPlayer from 'react-player'
 
 const AddLessonForm = (props) => {
   return (
@@ -19,7 +20,15 @@ const AddLessonForm = (props) => {
               props.preview && (
                   <Row className='d-flex justify-content-center'>
                       <p onClick={props.deleteVideo} className="btn btn-outline-danger w-25 ms-auto">Delete Video</p>
-                      <iframe className="embed-responsive-item" src={props.preview} width='100%' height="auto"></iframe>
+                      {/* <iframe className="embed-responsive-item" src={props.preview} width='100%' height="auto"></iframe> */}
+                      <div className='d-flex justify-content-center'>
+                            <ReactPlayer 
+                                url={props.preview}
+                                width = "420px"
+                                height= "240px"
+                                controls
+                            />
+                      </div>
                   </Row>
               )
             }
@@ -38,6 +47,7 @@ const AddLessonForm = (props) => {
                 <Form.Control type='file' accept='video/mp4' onChange={props.handleVideo} hidden/>
             </Form.Label>
         </Form.Group>
+        <Button type='submit'>Save</Button>
       </Form>
     </Modal.Body>
   </Modal>
