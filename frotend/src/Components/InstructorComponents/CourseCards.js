@@ -1,4 +1,5 @@
 import React from 'react'
+import './CourseCard.css'
 import { LinkContainer } from 'react-router-bootstrap'
 
 const CourseCards = (props) => {

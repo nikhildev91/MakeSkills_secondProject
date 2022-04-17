@@ -134,6 +134,12 @@ const addLesson = asyncHandler( async ( req, res ) => {
 
 })
 
+
+
+// @desc Revmove Lesson from Database
+// @router /api/instructors/remove-lesson/:slug
+// @access PRIVATE
+
 const removeLesson = asyncHandler( async (req, res) => {
     const { slug, lessonid } = req.params
     const course = await Course.findOne( { slug }).exec();
@@ -144,6 +150,11 @@ const removeLesson = asyncHandler( async (req, res) => {
 
 })
 
+
+
+// @desc Update Lesson =
+// @router /api/instructors/upfdate-lesson/:slug
+// @access PRIVATE
 
 const updateLesson = asyncHandler( async ( req, res ) => {
     const slug = req.params.slug

@@ -9,6 +9,8 @@ import ManageCourses from './Screens/ManageCourses';
 import InstructorDashboard from './Screens/InstructorDashboard';
 import PublishedCourses from './Screens/PublishedCourses';
 import EditCourse from './Screens/EditCourse';
+import CourseView from './Screens/Students/CourseView';
+import AddtoCart from './Screens/Students/AddtoCart'
 function App() {
   return (
     <Router>
@@ -24,6 +26,9 @@ function App() {
           <Route path='/instructor/published-courses' element={<PublishedCourses />} />
           <Route path='/instructor/course-view/:slug' element={ <InstructorCourseView /> } />
           <Route path='/instructor/edit-course/:slug' element={ <EditCourse /> } />
+
+          <Route path='/:slug' element={<CourseView />} />
+          <Route path='/add-to-cart/:slug' element={<AddtoCart />} />
         </Routes>
       </main>
     </Router>

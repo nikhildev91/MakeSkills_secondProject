@@ -10,6 +10,11 @@ import {
     lessonCreateReducer, 
     lessonUpdateReducer
 } from './Reducers/CourseReducers'
+import { 
+    studentCourseAddtocartReducer,
+    studentCourseDetailsReducer,
+    studentCourseListReducer 
+} from './Reducers/StudentReducers./CoursesReducers'
 
 
 const reducer = combineReducers({
@@ -22,7 +27,11 @@ const reducer = combineReducers({
     courseUpdate : courseUpdateReducer,
     
     lessonCreate : lessonCreateReducer,
-    lessonUpdate : lessonUpdateReducer
+    lessonUpdate : lessonUpdateReducer,
+
+    studentCourseList : studentCourseListReducer,
+    studentCourseView : studentCourseDetailsReducer,
+    addtocartCourses : studentCourseAddtocartReducer
 })
 
 const userInfoFromStorage = localStorage.getItem('userInfo') 

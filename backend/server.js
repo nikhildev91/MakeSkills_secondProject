@@ -7,6 +7,7 @@ import { notFound, errorHandler } from "./middlewares/errorMiddlewares.js";
 import adminRouters from './routes/adminRouters.js'
 import instructorRouters from './routes/instructorRouters.js'
 import userRouters from './routes/userRouters.js'
+import studentsRouters from './routes/studentsRouters.js'
 
 dotenv.config()
 connectDB()
@@ -17,6 +18,7 @@ app.use(express.json())
 app.use(cors())
 
 app.use('/api/users', userRouters)
+app.use('/api/students', studentsRouters)
 app.use('/api/instructors', instructorRouters)
 app.use('/api/admin', adminRouters)
 
