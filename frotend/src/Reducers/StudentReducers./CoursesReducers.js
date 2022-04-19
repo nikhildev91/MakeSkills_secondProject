@@ -1,4 +1,10 @@
 import { 
+    CART_LIST_FAIL,
+    CART_LIST_REQUEST,
+    CART_LIST_SUCCESS,
+    REMOVE_CART_ITEM_FAIL,
+    REMOVE_CART_ITEM_REQUEST,
+    REMOVE_CART_ITEM_SUCCESS,
     STUDENTS_COURSE_ADDTOCART_FAIL,
     STUDENTS_COURSE_ADDTOCART_REQUEST,
     STUDENTS_COURSE_ADDTOCART_SUCCESS,
@@ -43,6 +49,33 @@ export const studentCourseAddtocartReducer = (state = { }, action ) => {
         case STUDENTS_COURSE_ADDTOCART_SUCCESS :
             return { loading : false, addtocartCourses : action.payload }
         case STUDENTS_COURSE_ADDTOCART_FAIL : 
+            return { loading : false, error : action.payload }
+        default : 
+            return state
+    }
+}
+
+
+export const cartListReducer = (state = { }, action ) => {
+    switch ( action.type ) {
+        case CART_LIST_REQUEST :
+            return { loading : true }
+        case CART_LIST_SUCCESS :
+            return { loading : false, courses : action.payload }
+        case CART_LIST_FAIL : 
+            return { loading : false, error : action.payload }
+        default : 
+            return state
+    }
+}
+
+export const removeCartItemReducer = (state = { }, action ) => {
+    switch ( action.type ) {
+        case REMOVE_CART_ITEM_REQUEST :
+            return { loading : true }
+        case REMOVE_CART_ITEM_SUCCESS :
+            return { loading : false, remove : action.payload }
+        case REMOVE_CART_ITEM_FAIL : 
             return { loading : false, error : action.payload }
         default : 
             return state

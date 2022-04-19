@@ -14,22 +14,25 @@ const NavBar = () => {
     dispatch(logout())
   }
   return (
-    <Navbar bg="light" expand="lg" style={{ position: "sticky", top: "0", zIndex: "500"}}>
-    <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+    <Navbar variant='dark' bg='dark' expand="lg" style={{ position: "sticky", top: "0", zIndex: "500"}}>
+    <Navbar.Brand className='ms-5' style={{ color : "white "}}>MakeSkills</Navbar.Brand>
     <Navbar.Toggle aria-controls="basic-navbar-nav" />
     <Navbar.Collapse id="basic-navbar-nav">
-    <Nav className="me-auto">
-    <NavDropdown title="Category" id="basic-nav-dropdown">
-          <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-          <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-          <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-          <NavDropdown.Divider />
-    <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-        </NavDropdown>
-    <Nav.Link href="#link">Forum</Nav.Link>
-    { userInfo && !userInfo.isPremiumStudent && <Nav.Link href="#home">Pricing</Nav.Link> }
-    { !userInfo && <Nav.Link href="#home">Pricing</Nav.Link>}
-      </Nav>
+      {
+        userInfo && userInfo.isStudent&&
+        <Nav className="me-auto" >
+        <NavDropdown title="Category" id="basic-nav-dropdown" style={{ color: "white"}}>
+              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+              <NavDropdown.Divider />
+        <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+            </NavDropdown>
+        <Nav.Link href="#link">Forum</Nav.Link>
+        { userInfo && !userInfo.isPremiumStudent && <Nav.Link href="#home">Pricing</Nav.Link> }
+        { !userInfo && <Nav.Link href="#home">Pricing</Nav.Link>}
+          </Nav>
+      }
       {/* {
         userInfo && userInfo.isStudent &&
       <Nav className="me-auto">
@@ -53,21 +56,37 @@ const NavBar = () => {
       }
       { 
         !userInfo && 
+        <>
+        <Nav className="me-auto">
+        <NavDropdown title="Category" id="basic-nav-dropdown">
+              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+              <NavDropdown.Divider />
+        <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+            </NavDropdown>
+        <Nav.Link href="#link">Forum</Nav.Link>
+        { userInfo && !userInfo.isPremiumStudent && <Nav.Link href="#home">Pricing</Nav.Link> }
+        { !userInfo && <Nav.Link href="#home">Pricing</Nav.Link>}
+          </Nav>
         <Nav className="ms-auto">
         <LinkContainer to='/login'>
         <Nav.Link>Sign In</Nav.Link>
         </LinkContainer>
         <LinkContainer to='/register'>
-        <Button className='btn btn-outline btn-block'>Try For Free</Button>
+        <Button className='btn btn-outline btn-block me-5'>Try For Free</Button>
         </LinkContainer>
       </Nav> 
+      </>
       }
       
       {
         userInfo && userInfo.isStudent &&
       <Nav className="ms-auto">
-        <Nav.Link href="#home">Cart</Nav.Link>
-        <NavDropdown title={userInfo.fname} id="basic-nav-dropdown">
+        <LinkContainer to ='/add-to-cart'>
+        <Nav.Link>Cart</Nav.Link>
+        </LinkContainer>
+        <NavDropdown title={userInfo.fname} id="basic-nav-dropdown" className='' style={{ marginRight : "120px"}}>
           <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
           <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
           <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
@@ -79,7 +98,7 @@ const NavBar = () => {
       {
         userInfo && userInfo.isInstructor &&
       <Nav className="ms-auto">
-        <NavDropdown title={userInfo.fname} id="basic-nav-dropdown">
+        <NavDropdown title={userInfo.fname} id="basic-nav-dropdown" style={{ marginRight : "120px"}}>
           <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
           <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
           <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>

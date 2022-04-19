@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { Row, Col } from 'react-bootstrap'
+import { Row, Col ,Container} from 'react-bootstrap'
 import CourseListingCard from '../../Components/Students/CourseListingCard'
 import { studentCourseListAction } from '../../Actions/StudentActions/CourseActions'
 
@@ -21,9 +21,9 @@ const HomePage = () => {
    
   return (
       <>
-    <Row >
-        <Col sm={12} className='d-flex' style={{width : "100%", height : "450px", background : `url('/banner2.png')`, margin : "0px"}}>
-
+    <Row>
+        <Col sm={12} className='d-flex justify-content-center'>
+            <div style={{width : "100%", height : "450px", background : `url('/banner2.png')`, margin : "0px"}}></div>
         </Col>
     </Row>
     <Row className='m-5'>
@@ -31,7 +31,6 @@ const HomePage = () => {
             <CourseListingCard courses = {coursesList} />
         
     </Row>
-    <pre>{JSON.stringify(coursesList)}</pre>
     </>
   )
 }

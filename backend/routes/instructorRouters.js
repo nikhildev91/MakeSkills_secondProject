@@ -7,7 +7,9 @@ import {
     updateCourse,
     addLesson,
     removeLesson,
-    updateLesson
+    updateLesson,
+    publishCourse,
+    unPublishCourse
         } from "../controllers/courseControllers.js";
 
 const router = express.Router()
@@ -24,5 +26,10 @@ router.post('/add-lesson/:slug', instructorProtect, addLesson)
 router.put('/update-course/:slug', instructorProtect, updateCourse)
 router.put('/update-course/:slug/:lessonid', removeLesson)
 router.put('/update-lesson/:slug/:lessonid', instructorProtect, updateLesson)
+
+// publish course
+
+router.put('/publish/:courseid',instructorProtect, publishCourse)
+router.put('/unpublish/:courseid', instructorProtect, unPublishCourse)
 
 export default router

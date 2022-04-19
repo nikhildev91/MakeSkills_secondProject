@@ -17,7 +17,13 @@ import {
     LESSON_CREATE_FAIL,
     LESSON_UPDATE_REQUEST,
     LESSON_UPDATE_SUCCESS,
-    LESSON_UPDATE_FAIL
+    LESSON_UPDATE_FAIL,
+    PUBLISH_COURSE_REQUEST,
+    PUBLISH_COURSE_SUCCESS,
+    PUBLISH_COURSE_FAIL,
+    UNPUBLISH_COURSE_REQUEST,
+    UNPUBLISH_COURSE_SUCCESS,
+    UNPUBLISH_COURSE_FAIL
 } from '../Constants/CourseConstants'
 
 export const createCourseAction = (title, description, category, paid, price, image) => async ( dispatch, getState ) => {
@@ -216,6 +222,75 @@ export const updateLessonAction = (current, slug ) => async ( dispatch, getState
     }catch(error) {
         dispatch({
             type : LESSON_UPDATE_FAIL,
+            payload :
+            error.response && error.response.data.message ?
+            error.response.data.message :
+            error.message
+        })
+    }
+}
+
+
+
+export const publishCourseAction = (courseId) => async ( dispatch, getState ) => {
+    try{
+        dispatch({
+            type : PUBLISH_COURSE_REQUEST
+        })
+
+        const {
+            userLogin : { userInfo }
+        } = getState()
+
+        const config = {
+            headers : {
+                Authorization : `Bearer ${userInfo.token}`
+            }
+        }
+
+        const { data } = await axios.put(`/api/instructors/publish/${courseId}`,{}, config)
+
+        dispatch({
+            type : PUBLISH_COURSE_SUCCESS,
+            payload : data
+        })
+    }catch(error) {
+        dispatch({
+            type : PUBLISH_COURSE_FAIL,
+            payload :
+            error.response && error.response.data.message ?
+            error.response.data.message :
+            error.message
+        })
+    }
+}
+
+
+export const unpublishCourseAction = (courseId) => async ( dispatch, getState ) => {
+    try{
+        dispatch({
+            type : UNPUBLISH_COURSE_REQUEST
+        })
+
+        const {
+            userLogin : { userInfo }
+        } = getState()
+
+        const config = {
+            headers : {
+                Authorization : `Bearer ${userInfo.token}`
+            }
+        }
+
+        const { data } = await axios.put(`/api/instructors/unpublish/${courseId}`,{}, config)
+
+        dispatch({
+            type : UNPUBLISH_COURSE_SUCCESS,
+            payload : data
+        })
+    }catch(error) {
+        dispatch({
+            type : UNPUBLISH_COURSE_FAIL,
             payload :
             error.response && error.response.data.message ?
             error.response.data.message :

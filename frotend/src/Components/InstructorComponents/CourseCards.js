@@ -6,11 +6,11 @@ const CourseCards = (props) => {
   return (     
     <div id="cards_landscape_wrap-2">
         <div class="container">
+                <h1>Manage Courses</h1>
             <div class="row">
                     {
                         props.courses && props.courses.map( course => (
                             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-                                
                                 <LinkContainer to={`/instructor/course-view/${course.slug}`}>
                                     <a href="">
                                     <div class="card-flyer">

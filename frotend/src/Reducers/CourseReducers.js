@@ -20,7 +20,15 @@ import {
     LESSON_UPDATE_REQUEST,
     LESSON_UPDATE_SUCCESS,
     LESSON_UPDATE_FAIL,
-    LESSON_UPDATE_RESET
+    LESSON_UPDATE_RESET,
+    PUBLISH_COURSE_REQUEST,
+    PUBLISH_COURSE_SUCCESS,
+    PUBLISH_COURSE_FAIL,
+    UNPUBLISH_COURSE_REQUEST,
+    UNPUBLISH_COURSE_SUCCESS,
+    UNPUBLISH_COURSE_FAIL,
+    PUBLISH_COURSE_RESET,
+    UNPUBLISH_COURSE_RESET
 } from '../Constants/CourseConstants'
 
 export const courseCreateReducer = (state = { }, action ) => {
@@ -107,6 +115,37 @@ export const lessonUpdateReducer = (state = { }, action ) => {
             return { loading : false, error : action.payload }
         case LESSON_UPDATE_RESET :
             return {}
+        default : 
+            return state
+    }
+}
+
+
+export const coursePublishReducer = (state = { }, action ) => {
+    switch ( action.type ) {
+        case PUBLISH_COURSE_REQUEST :
+            return { loading : true }
+        case PUBLISH_COURSE_SUCCESS :
+            return { loading : false, published : action.payload }
+        case PUBLISH_COURSE_FAIL : 
+            return { loading : false, error : action.payload }
+        case PUBLISH_COURSE_RESET :
+            return { published : false }
+        default : 
+            return state
+    }
+}
+
+export const courseUnpublishReducer = (state = { }, action ) => {
+    switch ( action.type ) {
+        case UNPUBLISH_COURSE_REQUEST :
+            return { loading : true }
+        case UNPUBLISH_COURSE_SUCCESS :
+            return { loading : false, unpublished : true}
+        case UNPUBLISH_COURSE_FAIL :
+            return { loading : false, error : action.payload }
+            case UNPUBLISH_COURSE_RESET :
+                return { unpublished : false }
         default : 
             return state
     }

@@ -28,7 +28,7 @@ function App() {
           <Route path='/instructor/edit-course/:slug' element={ <EditCourse /> } />
 
           <Route path='/:slug' element={<CourseView />} />
-          <Route path='/add-to-cart/:slug' element={<AddtoCart />} />
+          <Route path='/add-to-cart' element={<AddtoCart />} />
         </Routes>
       </main>
     </Router>

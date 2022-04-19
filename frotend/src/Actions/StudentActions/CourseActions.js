@@ -1,5 +1,11 @@
 import axios from "axios";
 import { 
+    CART_LIST_FAIL,
+    CART_LIST_REQUEST,
+    CART_LIST_SUCCESS,
+    REMOVE_CART_ITEM_FAIL,
+    REMOVE_CART_ITEM_REQUEST,
+    REMOVE_CART_ITEM_SUCCESS,
     STUDENTS_COURSE_ADDTOCART_FAIL,
     STUDENTS_COURSE_ADDTOCART_REQUEST,
     STUDENTS_COURSE_ADDTOCART_SUCCESS,
@@ -96,7 +102,7 @@ export const addtocartAction = (slug) => async ( dispatch, getState ) => {
             }
         }
 
-        const { data } = await axios.post(`/api/students/add-to-cart/${slug}`, config)
+        const { data } = await axios.post(`/api/students/add-to-cart/${userInfo._id}/${slug}`, config)
 
         dispatch({
             type : STUDENTS_COURSE_ADDTOCART_SUCCESS,
@@ -112,4 +118,74 @@ export const addtocartAction = (slug) => async ( dispatch, getState ) => {
         })
     }
 }
+
+
+export const cartListAction = () => async ( dispatch, getState ) => {
+    try{
+        dispatch({
+            type : CART_LIST_REQUEST
+        })
+
+        const {
+            userLogin : { userInfo }
+        } = getState()
+
+        const config = {
+            headers : {
+                Authorization : `Bearer ${userInfo.token}`
+            }
+        }
+
+        const { data } = await axios.get(`/api/students/add-to-cart/${userInfo._id}`, config)
+
+        dispatch({
+            type : CART_LIST_SUCCESS,
+            payload : data
+        })
+    }catch(error) {
+        dispatch({
+            type : CART_LIST_FAIL,
+            payload :
+            error.response && error.response.data.message ?
+            error.response.data.message :
+            error.message
+        })
+    }
+}
+
+
+export const removeCartItemAction = ( itemId, cartId ) => async ( dispatch, getState ) => {
+    try{
+        dispatch({
+            type : REMOVE_CART_ITEM_REQUEST
+        })
+
+        const {
+            userLogin : { userInfo }
+        } = getState()
+
+        const config = {
+            headers : {
+                Authorization : `Bearer ${userInfo.token}`
+            }
+        }
+
+        const { data } = await axios.post(`/api/students/remove-cart-item/${userInfo._id}/${itemId}/${cartId}`, config)
+
+        dispatch({
+            type : REMOVE_CART_ITEM_SUCCESS,
+            payload : data
+        })
+    }catch(error) {
+        dispatch({
+            type : REMOVE_CART_ITEM_FAIL,
+            payload :
+            error.response && error.response.data.message ?
+            error.response.data.message :
+            error.message
+        })
+    }
+}
+
+
 

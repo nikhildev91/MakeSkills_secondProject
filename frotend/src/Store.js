@@ -5,12 +5,16 @@ import { userLoginReducer, userRegisterReducer } from './Reducers/UserReducers'
 import { 
     courseCreateReducer, 
     courseListReducer, 
+    coursePublishReducer, 
+    courseUnpublishReducer, 
     courseUpdateReducer, 
     courseViewReducer, 
     lessonCreateReducer, 
     lessonUpdateReducer
 } from './Reducers/CourseReducers'
 import { 
+    cartListReducer,
+    removeCartItemReducer,
     studentCourseAddtocartReducer,
     studentCourseDetailsReducer,
     studentCourseListReducer 
@@ -25,13 +29,17 @@ const reducer = combineReducers({
     courseList : courseListReducer,
     courseViewDetails : courseViewReducer,
     courseUpdate : courseUpdateReducer,
+    publishCourse : coursePublishReducer,
+    unpublishCourse : courseUnpublishReducer,
     
     lessonCreate : lessonCreateReducer,
     lessonUpdate : lessonUpdateReducer,
 
     studentCourseList : studentCourseListReducer,
     studentCourseView : studentCourseDetailsReducer,
-    addtocartCourses : studentCourseAddtocartReducer
+    addtocartCourses : studentCourseAddtocartReducer,
+    cartLists : cartListReducer,
+    removeCartItem : removeCartItemReducer
 })
 
 const userInfoFromStorage = localStorage.getItem('userInfo') 

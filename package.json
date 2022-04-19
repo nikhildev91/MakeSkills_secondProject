@@ -22,6 +22,7 @@
     "mongoose": "^6.2.10",
     "nanoid": "^3.3.2",
     "nodemon": "^2.0.15",
+    "passport-http-bearer": "^1.0.1",
     "slugify": "^1.6.5"
   }
 }

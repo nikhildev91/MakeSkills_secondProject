@@ -118,7 +118,7 @@ const addLesson = asyncHandler( async ( req, res ) => {
     if( loggedInUser != authorId ) {
         return res.status(400).send("Unauthoried")
     }
-
+    
     const updated = await Course.findOneAndUpdate({slug : slug }, 
     {
         $push: { lessons : { name, content, video, slug : slugify(name)}}
@@ -187,6 +187,42 @@ const updateLesson = asyncHandler( async ( req, res ) => {
     }
 })
 
+const publishCourse = asyncHandler( async (req, res ) => {
+    const courseId = req.params.courseid
+    const course = await Course.findById(courseId).select('instructorId').exec()
+    const authorId = JSON.stringify(course.instructorId)
+    const loggedUser = JSON.stringify(req.instr._id)
+    if(authorId != loggedUser){
+        res.status(401)
+        throw new Error("Unauthorized")
+    }
+    
+    const updated = await Course.findByIdAndUpdate( courseId, {
+        published : true
+    }, { new : true } ).exec()
+
+    res.json(updated)
+
+
+})
+
+const unPublishCourse = asyncHandler( async (req, res) => {
+    const courseId = req.params.courseid
+    const course = await Course.findById(courseId).select('instructorId').exec()
+    const authorId = JSON.stringify(course.instructorId)
+    const loggedUser = JSON.stringify(req.instr._id)
+    if(authorId != loggedUser){
+        res.status(401)
+        throw new Error("Unauthorized")
+    }
+    
+    const updated = await Course.findByIdAndUpdate( courseId, {
+        published : false
+    }, { new : true } ).exec()
+
+    res.json(updated)
+})
+
 export { 
     createCourse, 
     courseLists, 
@@ -194,6 +230,8 @@ export {
     updateCourse,
     addLesson,
     removeLesson,
-    updateLesson
+    updateLesson,
+    publishCourse,
+    unPublishCourse
 
         }

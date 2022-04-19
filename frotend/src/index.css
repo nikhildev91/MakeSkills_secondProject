@@ -2,3 +2,12 @@ body{
     background-color: #222;
     color: #fff
 }
+
+.cartListBox{
+    background-color: #000;
+    min-height: 80vh;
+}
+
+.Lessons_List{
+    color : white
+}

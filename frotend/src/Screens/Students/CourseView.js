@@ -1,15 +1,18 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 import { Row, Container, Col, Card } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
+import ReactPlayer from 'react-player'
 import './CourseView.css'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { studentCourseViewAction } from '../../Actions/StudentActions/CourseActions'
-
+import { addtocartAction, studentCourseViewAction } from '../../Actions/StudentActions/CourseActions'
 const CourseView = () => {
     const { slug } = useParams()
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const [ enrolled, setEnrolled ] = useState({})
+
     const userLogin = useSelector( state => state.userLogin )
     const { userInfo } = userLogin
 
@@ -21,15 +24,39 @@ const CourseView = () => {
             navigate('/')
         }
         dispatch(studentCourseViewAction( slug ))
+        // if( userInfo && courseView && courseView.courseDetails ) checkEnrollment()
     }, [ dispatch, userInfo ])
 
+    const checkEnrollment = async () => {
+      const { data } = await axios.get(`/api/students/check-enrollment/${courseView.courseDetails._id}`)
+      console.log("check enrollment", data);
+      setEnrolled(data)
+
+    }
+
+    const handleFreeEnrollment = () => {
+      console.log("handle free enrollment");
+    }
+
+    const handleAddtoCart = () => {
+      dispatch(addtocartAction(slug))
+    }
   return (
     <>
     <div className='courseDetailsTitleBox mt-2'>
     <Container>
     <Row>
         <Col className='d-flex justify-content-center p-3' md={6}>
-         <img src={courseView && courseView.courseDetails && courseView.courseDetails.image} alt="" width="300px"/>
+          {
+            courseView && courseView.courseDetails && courseView.courseDetails.lessons[0] && courseView.courseDetails.lessons[0].free_preview ?
+            <ReactPlayer 
+            url={ courseView.courseDetails.lessons[0].video} 
+            playing ={ true}
+            light={courseView.courseDetails.image}
+            controls
+            /> :
+         <img src={courseView && courseView.courseDetails && courseView.courseDetails.image} alt=""/>
+          }
         </Col>
         <Col md={6} className="p-2">
           <h1>{courseView && courseView.courseDetails && courseView.courseDetails.title}</h1>
@@ -37,6 +64,7 @@ const CourseView = () => {
           <p>Author : &nbsp;{courseView && courseView.author && courseView.author.fname}</p>
           <p>{courseView && courseView.courseDetails && courseView.courseDetails.lessons && courseView.courseDetails.lessons.length} Lessons</p>
           <p>Students : &nbsp; {courseView && courseView.courseDetails && courseView.courseDetails.students && courseView.courseDetails.students.length}0</p>
+          <h2 style={{ color : "white"}}> Price :  &nbsp;{courseView && courseView.courseDetails && courseView.courseDetails.paid ? "₹ "+courseView.courseDetails.price : "Free"}</h2>
         </Col>
     </Row>  
     </Container>
@@ -48,21 +76,41 @@ const CourseView = () => {
             <h4>Description :</h4>
             <span>{courseView && courseView.courseDetails && courseView.courseDetails.description}</span>
           </Card>
+          <Card className='lessonlistbox p-3 mt-3'>
+            <h4 className='mb-4'>{courseView && courseView.courseDetails && courseView.courseDetails.lessons && courseView.courseDetails.lessons.length } Lessons Included</h4>
+            <div>
+              {
+                courseView && courseView.courseDetails && courseView.courseDetails.lessons.map( (lesson, index )=> (
+                  <>
+                  <h5>{index+1}.&nbsp;&nbsp;&nbsp;{lesson.name}</h5>
+                    <hr style={{ color : "black"}} />
+                  </>
+                ))
+              }
+            </div>
+          </Card>
         </Col>
         <Col md={4} className="p-4">
+          {
+            courseView && courseView.courseDetails && courseView.courseDetails.paid ?
         <Card className='addtoCart p-5'>
-            <h4>Description :</h4>
             <Col sm={12} className="d-flex justify-content-center">
               <LinkContainer to={`/add-to-wishlist/${courseView && courseView.courseDetails.slug}`}>
                 <span className="btn btn-outline-dark btn-block mt-3 w-100">Add to Wishlist</span>
               </LinkContainer>
             </Col>
             <Col sm={12} className="d-flex justify-content-center">
-              <LinkContainer to={`/add-to-cart/${courseView && courseView.courseDetails.slug}`}>
-                <span className="btn btn-outline-success btn-block mt-3 w-100">Add to Cart</span>
-              </LinkContainer>
+
+                <span onClick={handleAddtoCart} className="btn btn-outline-success btn-block mt-3 w-100">Add to Cart</span>
+              
             </Col>
-          </Card>
+          </Card> :
+          <Card className='addtoCart p-5'>
+          <Col sm={12} className="d-flex justify-content-center">
+              <span onClick={handleFreeEnrollment} className="btn btn-outline-dark btn-block mt-3 w-100"><i className="fa fa-shield-check"></i>Enroll Course</span>
+          </Col>
+        </Card>
+          }
         </Col>
       </Row>
     </Container>
