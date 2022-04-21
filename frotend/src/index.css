@@ -1,6 +1,8 @@
 body{
     background-color: #222;
-    color: #fff
+    color: #fff;
+    margin: 0%;
+    padding: 0;
 }
 
 .cartListBox{
@@ -11,3 +13,7 @@ body{
 .Lessons_List{
     color : white
 }
+
+/* div{
+    border: red solid 2px;
+} */

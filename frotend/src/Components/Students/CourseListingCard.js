@@ -2,8 +2,7 @@ import React from 'react'
 import './CourseListCard.css'
 import { LinkContainer } from 'react-router-bootstrap'
 
-const 
-CourseListingCard = (props) => {
+const CourseListingCard = (props) => {
   return (
           <>
                 {

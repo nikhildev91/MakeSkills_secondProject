@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
+
 const userSchema = mongoose.Schema({
     fname : {
         type : String,
@@ -33,7 +34,13 @@ const userSchema = mongoose.Schema({
         type : Boolean,
         default : false,
         required : true
-    }
+    },
+    myCourses :[
+        {
+            type : mongoose.Schema.Types.ObjectId, 
+            ref : "Course"
+        }
+    ]
 }, { timestamps : true })
 
 userSchema.methods.matchPassword = async function(enteredPassword){

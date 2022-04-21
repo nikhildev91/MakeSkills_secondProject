@@ -7,7 +7,9 @@ import {
     addtocart,
     cartList,
     cartItemRemove,
-    checkEnrollment
+    checkEnrollment,
+    freeEnrollment,
+    myCourseslist
  } from '../controllers/studentsControllers/courseControllers.js'
 
 
@@ -16,7 +18,9 @@ import {
  router.post('/add-to-cart/:userId/:slug', addtocart)
  router.get('/add-to-cart/:userId', studentProtect, cartList)
  router.post('/remove-cart-item/:userid/:itemid/:cartid', cartItemRemove)
+ router.get('/mycourses/:userid', studentProtect, myCourseslist)
 
  router.get('/check-enrollment/:courseid', studentProtect, checkEnrollment )
+ router.post('/free-enrollment/:courseid', studentProtect, freeEnrollment)
 
 export default router

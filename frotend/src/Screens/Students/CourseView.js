@@ -6,7 +6,7 @@ import ReactPlayer from 'react-player'
 import './CourseView.css'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { addtocartAction, studentCourseViewAction } from '../../Actions/StudentActions/CourseActions'
+import { addtocartAction, enrollmentFreeCourseAction, studentCourseViewAction } from '../../Actions/StudentActions/CourseActions'
 const CourseView = () => {
     const { slug } = useParams()
     const dispatch = useDispatch()
@@ -24,18 +24,27 @@ const CourseView = () => {
             navigate('/')
         }
         dispatch(studentCourseViewAction( slug ))
-        // if( userInfo && courseView && courseView.courseDetails ) checkEnrollment()
     }, [ dispatch, userInfo ])
 
+    useEffect(()=>{
+      if( userInfo && courseView && courseView.courseDetails ) checkEnrollment()
+    },[ userInfo, courseView ])
+
     const checkEnrollment = async () => {
-      const { data } = await axios.get(`/api/students/check-enrollment/${courseView.courseDetails._id}`)
-      console.log("check enrollment", data);
+      const config = {
+        headers : {
+          Authorization : `Bearer ${userInfo && userInfo.token}`
+        }
+      }
+      const { data } = await axios.get(`/api/students/check-enrollment/${courseView.courseDetails._id}`, config)
+      console.log(data);
       setEnrolled(data)
 
     }
 
-    const handleFreeEnrollment = () => {
-      console.log("handle free enrollment");
+    const handleFreeEnrollment = (e) => {
+      e.preventDefault()
+      dispatch(enrollmentFreeCourseAction(enrolled && enrolled.course && enrolled.course._id))
     }
 
     const handleAddtoCart = () => {
@@ -107,7 +116,10 @@ const CourseView = () => {
           </Card> :
           <Card className='addtoCart p-5'>
           <Col sm={12} className="d-flex justify-content-center">
-              <span onClick={handleFreeEnrollment} className="btn btn-outline-dark btn-block mt-3 w-100"><i className="fa fa-shield-check"></i>Enroll Course</span>
+              {
+                enrolled && enrolled.status ? <span className="btn btn-outline-primary btn-block mt-3 w-100">Go To Your Courses</span> :
+                <span onClick={handleFreeEnrollment} className="btn btn-outline-dark btn-block mt-3 w-100">Enroll Course</span>
+              }
           </Col>
         </Card>
           }

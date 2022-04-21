@@ -2,6 +2,13 @@ import {
     CART_LIST_FAIL,
     CART_LIST_REQUEST,
     CART_LIST_SUCCESS,
+    FREE_ENROLLMENT_COURSE_FAIL,
+    FREE_ENROLLMENT_COURSE_REQUEST,
+    FREE_ENROLLMENT_COURSE_RESET,
+    FREE_ENROLLMENT_COURSE_SUCCESS,
+    LIST_MYCOURSES_FAIL,
+    LIST_MYCOURSES_REQUEST,
+    LIST_MYCOURSES_SUCCESS,
     REMOVE_CART_ITEM_FAIL,
     REMOVE_CART_ITEM_REQUEST,
     REMOVE_CART_ITEM_SUCCESS,
@@ -76,6 +83,34 @@ export const removeCartItemReducer = (state = { }, action ) => {
         case REMOVE_CART_ITEM_SUCCESS :
             return { loading : false, remove : action.payload }
         case REMOVE_CART_ITEM_FAIL : 
+            return { loading : false, error : action.payload }
+        default : 
+            return state
+    }
+}
+
+export const freeEnrollmentCourseReducer = (state = { }, action ) => {
+    switch ( action.type ) {
+        case FREE_ENROLLMENT_COURSE_REQUEST :
+            return { loading : true }
+        case FREE_ENROLLMENT_COURSE_SUCCESS :
+            return { loading : false, success : action.payload }
+        case FREE_ENROLLMENT_COURSE_FAIL : 
+            return { loading : false, error : action.payload }
+        case FREE_ENROLLMENT_COURSE_RESET : 
+            return { }
+        default : 
+            return state
+    }
+}
+
+export const listMyCoursesReducer = (state = { }, action ) => {
+    switch ( action.type ) {
+        case LIST_MYCOURSES_REQUEST :
+            return { loading : true }
+        case LIST_MYCOURSES_SUCCESS :
+            return { loading : false, courses : action.payload }
+        case LIST_MYCOURSES_FAIL : 
             return { loading : false, error : action.payload }
         default : 
             return state

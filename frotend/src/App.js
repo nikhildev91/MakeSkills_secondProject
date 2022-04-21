@@ -11,6 +11,7 @@ import PublishedCourses from './Screens/PublishedCourses';
 import EditCourse from './Screens/EditCourse';
 import CourseView from './Screens/Students/CourseView';
 import AddtoCart from './Screens/Students/AddtoCart'
+import MyCourses from './Screens/Students/MyCourses';
 function App() {
   return (
     <Router>
@@ -18,8 +19,10 @@ function App() {
       <main>
         <Routes>
           <Route path='/' element={<HomeScreen />} />
+
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
+
           <Route path='/instructor' element={<InstructorDashboard />} />
           <Route path='/instructor/create-course' element={<CreateCourse />} />
           <Route path='/instructor/manage-courses' element={<ManageCourses />} />
@@ -29,6 +32,7 @@ function App() {
 
           <Route path='/:slug' element={<CourseView />} />
           <Route path='/add-to-cart' element={<AddtoCart />} />
+          <Route path='/my-courses' element={<MyCourses />} />
         </Routes>
       </main>
     </Router>

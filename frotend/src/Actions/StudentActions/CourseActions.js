@@ -3,6 +3,12 @@ import {
     CART_LIST_FAIL,
     CART_LIST_REQUEST,
     CART_LIST_SUCCESS,
+    FREE_ENROLLMENT_COURSE_FAIL,
+    FREE_ENROLLMENT_COURSE_REQUEST,
+    FREE_ENROLLMENT_COURSE_SUCCESS,
+    LIST_MYCOURSES_FAIL,
+    LIST_MYCOURSES_REQUEST,
+    LIST_MYCOURSES_SUCCESS,
     REMOVE_CART_ITEM_FAIL,
     REMOVE_CART_ITEM_REQUEST,
     REMOVE_CART_ITEM_SUCCESS,
@@ -179,6 +185,76 @@ export const removeCartItemAction = ( itemId, cartId ) => async ( dispatch, getS
     }catch(error) {
         dispatch({
             type : REMOVE_CART_ITEM_FAIL,
+            payload :
+            error.response && error.response.data.message ?
+            error.response.data.message :
+            error.message
+        })
+    }
+}
+
+
+
+export const enrollmentFreeCourseAction = ( courseId ) => async ( dispatch, getState ) => {
+    try{
+        dispatch({
+            type : FREE_ENROLLMENT_COURSE_REQUEST
+        })
+
+        const {
+            userLogin : { userInfo }
+        } = getState()
+
+        const config = {
+            headers : {
+                Authorization : `Bearer ${userInfo.token}`
+            }
+        }
+
+        const { data } = await axios.post(`/api/students/free-enrollment/${courseId}`,{}, config)
+
+        dispatch({
+            type : FREE_ENROLLMENT_COURSE_SUCCESS,
+            payload : data
+        })
+    }catch(error) {
+        dispatch({
+            type : FREE_ENROLLMENT_COURSE_FAIL,
+            payload :
+            error.response && error.response.data.message ?
+            error.response.data.message :
+            error.message
+        })
+    }
+}
+
+
+
+export const loadMyCoursesAction = () => async ( dispatch, getState ) => {
+    try{
+        dispatch({
+            type : LIST_MYCOURSES_REQUEST
+        })
+
+        const {
+            userLogin : { userInfo }
+        } = getState()
+
+        const config = {
+            headers : {
+                Authorization : `Bearer ${userInfo.token}`
+            }
+        }
+
+        const { data } = await axios.get(`/api/students/mycourses/${userInfo._id}`, config)
+
+        dispatch({
+            type : LIST_MYCOURSES_SUCCESS,
+            payload : data
+        })
+    }catch(error) {
+        dispatch({
+            type : LIST_MYCOURSES_FAIL,
             payload :
             error.response && error.response.data.message ?
             error.response.data.message :

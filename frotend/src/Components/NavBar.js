@@ -5,6 +5,13 @@ import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { logout } from '../Actions/UserActions'
 
+// const toggleButton = document.getElementsByClassName('toggle-button')[0]
+// const navbarLinks = document.getElementsByClassName('navbar-links')[0]
+
+// toggleButton.addEventListener('click', () => {
+//   navbarLinks.classList.toggle('active')
+// })
+
 const NavBar = () => {
   const dispatch = useDispatch()
 
@@ -87,8 +94,8 @@ const NavBar = () => {
         <Nav.Link>Cart</Nav.Link>
         </LinkContainer>
         <NavDropdown title={userInfo.fname} id="basic-nav-dropdown" className='' style={{ marginRight : "120px"}}>
-          <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-          <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
+          <NavDropdown.Item href="#action/3.1">Profile</NavDropdown.Item>
+          <NavDropdown.Item href="#action/3.2"><LinkContainer to='/my-courses'><span>My Courses </span></LinkContainer></NavDropdown.Item>
           <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
           <NavDropdown.Divider />
           <NavDropdown.Item onClick={handlelogout}>Logout</NavDropdown.Item>
@@ -109,6 +116,7 @@ const NavBar = () => {
       }
     </Navbar.Collapse>
 </Navbar>
+
   )
 }
 

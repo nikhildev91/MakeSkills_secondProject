@@ -105,6 +105,11 @@ const cartList = asyncHandler( async ( req, res ) => {
 })
 
 
+
+// @desc Remove Item from Cart
+// @router /api/students/remove-cart-item/:userid/:itemid/:cartid
+// @access PRIVATE
+
 const cartItemRemove = asyncHandler( async ( req, res ) => {
     const { userid , itemid, cartid } = req.params
     const item = mongoose.Types.ObjectId(itemid)
@@ -136,6 +141,11 @@ const cartItemRemove = asyncHandler( async ( req, res ) => {
     
 })
 
+
+// @desc Check the Enroll course before 
+// @router /api/students/check-enrollment/:courseid
+// @access PRIVATE
+
 const checkEnrollment = asyncHandler( async (req, res) => {
     const { courseid } = req.params
     // find couseres of the currently logged in user
@@ -143,8 +153,9 @@ const checkEnrollment = asyncHandler( async (req, res) => {
 
     // check if course id is found in user courses array
     let ids = []
-    for(let i = 0; i < user.courses.length; i++){
-        ids.push(user.courses[i].toString())
+    let length = user.myCourses && user.myCourses.length
+    for(let i = 0; i < length; i++){
+        ids.push(user.myCourses[i].toString())
     }
     res.json({
         status : ids.includes(courseid),
@@ -152,11 +163,44 @@ const checkEnrollment = asyncHandler( async (req, res) => {
     })
 })
 
+
+
+// @desc Check the Course is Free or paid
+// @router /api/students/free-enrollment/:courseid
+// @access PRIVATE
+
+const freeEnrollment = asyncHandler( async (req, res) => {
+    // check if course is free or paid 
+    const course = await Course.findById(req.params.courseid).exec()
+    console.log(course);
+    if(course.paid) return
+    const result = await User.findByIdAndUpdate(req.student._id, {
+        $addToSet : { myCourses : course._id }
+    }, { new : true }).exec();
+    res.json({
+        message : ("enrollment sucess"),
+        course 
+    })
+})
+
+
+// @desc Get all courses the user bought
+// @router /api/students/mycourses/:userid
+// @access PRIVATE
+
+const myCourseslist = asyncHandler( async ( req, res ) => {
+    const user = await User.findById(req.params.userid).exec()
+    const courses = await Course.find({ _id : { $in : user.myCourses }})
+    .populate("instructorId", "_id fname lname").exec()
+    res.json(courses)
+})
 export {
     listCourses,
     courseDetails,
     addtocart,
     cartList,
     cartItemRemove,
-    checkEnrollment
+    checkEnrollment,
+    freeEnrollment,
+    myCourseslist
 }

@@ -2,7 +2,9 @@ import React from 'react'
 
 const MainHomepage = () => {
   return (
-    <div>MainHomepage</div>
+    <>
+    <div className="col-sm-12" style={{}}></div>
+    </>
   )
 }
 

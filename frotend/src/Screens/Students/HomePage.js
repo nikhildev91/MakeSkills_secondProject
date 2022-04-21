@@ -21,15 +21,10 @@ const HomePage = () => {
    
   return (
       <>
-    <Row>
-        <Col sm={12} className='d-flex justify-content-center'>
             <div style={{width : "100%", height : "450px", background : `url('/banner2.png')`, margin : "0px"}}></div>
-        </Col>
-    </Row>
     <Row className='m-5'>
         <h1>What To Learn Next?</h1>
-            <CourseListingCard courses = {coursesList} />
-        
+            <CourseListingCard courses = {coursesList} />    
     </Row>
     </>
   )
