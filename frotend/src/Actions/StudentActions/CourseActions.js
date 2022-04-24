@@ -6,9 +6,24 @@ import {
     FREE_ENROLLMENT_COURSE_FAIL,
     FREE_ENROLLMENT_COURSE_REQUEST,
     FREE_ENROLLMENT_COURSE_SUCCESS,
+    LIST_COMPLETE_FAIL,
+    LIST_COMPLETE_REQUEST,
+    LIST_COMPLETE_SUCCESS,
     LIST_MYCOURSES_FAIL,
     LIST_MYCOURSES_REQUEST,
     LIST_MYCOURSES_SUCCESS,
+    MARK_lESSON_COMPLETE_FAIL,
+    MARK_lESSON_COMPLETE_REQUEST,
+    MARK_lESSON_COMPLETE_SUCCESS,
+    MYCOURSES_DETAILS_FAIL,
+    MYCOURSES_DETAILS_REQUEST,
+    MYCOURSES_DETAILS_SUCCESS,
+    MYCOURSE_START_FAIL,
+    MYCOURSE_START_REQUEST,
+    MYCOURSE_START_SUCCESS,
+    PROVIDE_CERTIFICATE_FAIL,
+    PROVIDE_CERTIFICATE_REQUEST,
+    PROVIDE_CERTIFICATE_SUCCESS,
     REMOVE_CART_ITEM_FAIL,
     REMOVE_CART_ITEM_REQUEST,
     REMOVE_CART_ITEM_SUCCESS,
@@ -262,6 +277,182 @@ export const loadMyCoursesAction = () => async ( dispatch, getState ) => {
         })
     }
 }
+
+
+
+
+export const mycourseDetailsAction = ( slug ) => async ( dispatch, getState ) => {
+    try{
+        dispatch({
+            type : MYCOURSES_DETAILS_REQUEST
+        })
+
+        const {
+            userLogin : { userInfo }
+        } = getState()
+
+        const config = {
+            headers : {
+                Authorization : `Bearer ${userInfo.token}`
+            }
+        }
+
+        const { data } = await axios.get(`/api/students/mycourses-details/${userInfo._id}/${slug}`, config)
+
+        dispatch({
+            type : MYCOURSES_DETAILS_SUCCESS,
+            payload : data
+        })
+    }catch(error) {
+        dispatch({
+            type : MYCOURSES_DETAILS_FAIL,
+            payload :
+            error.response && error.response.data.message ?
+            error.response.data.message :
+            error.message
+        })
+    }
+}
+
+
+export const startCourseAction = ( slug ) => async ( dispatch, getState ) => {
+    try{
+        dispatch({
+            type : MYCOURSE_START_REQUEST
+        })
+
+        const {
+            userLogin : { userInfo }
+        } = getState()
+
+        const config = {
+            headers : {
+                Authorization : `Bearer ${userInfo.token}`
+            }
+        }
+
+        const { data } = await axios.get(`/api/students/start-course/${userInfo._id}/${slug}`, config)
+
+        dispatch({
+            type : MYCOURSE_START_SUCCESS,
+            payload : data
+        })
+    }catch(error) {
+        dispatch({
+            type : MYCOURSE_START_FAIL,
+            payload :
+            error.response && error.response.data.message ?
+            error.response.data.message :
+            error.message
+        })
+    }
+}
+
+
+
+export const markLessonCompleteAction = ( courseId, lessonId ) => async ( dispatch, getState ) => {
+    try{
+        dispatch({
+            type : MARK_lESSON_COMPLETE_REQUEST
+        })
+
+        const {
+            userLogin : { userInfo }
+        } = getState()
+
+        const config = {
+            headers : {
+                Authorization : `Bearer ${userInfo.token}`
+            }
+        }
+
+        const { data } = await axios.post(`/api/students/mark-completed-lesson`,{ courseId, lessonId }, config)
+
+        dispatch({
+            type : MARK_lESSON_COMPLETE_SUCCESS,
+            payload : data
+        })
+    }catch(error) {
+        dispatch({
+            type : MARK_lESSON_COMPLETE_FAIL,
+            payload :
+            error.response && error.response.data.message ?
+            error.response.data.message :
+            error.message
+        })
+    }
+}
+
+
+export const listCourseCompleteAction = ( courseId ) => async ( dispatch, getState ) => {
+    try{
+        dispatch({
+            type : LIST_COMPLETE_REQUEST
+        })
+
+        const {
+            userLogin : { userInfo }
+        } = getState()
+
+        const config = {
+            headers : {
+                Authorization : `Bearer ${userInfo.token}`
+            }
+        }
+
+        const { data } = await axios.post(`/api/students/list-completed`,{ courseId }, config)
+
+        dispatch({
+            type : LIST_COMPLETE_SUCCESS,
+            payload : data
+        })
+    }catch(error) {
+        dispatch({
+            type : LIST_COMPLETE_FAIL,
+            payload :
+            error.response && error.response.data.message ?
+            error.response.data.message :
+            error.message
+        })
+    }
+}
+
+
+export const provideCertificateAction = ( courseId ) => async ( dispatch, getState ) => {
+    try{
+        dispatch({
+            type : PROVIDE_CERTIFICATE_REQUEST
+        })
+
+        const {
+            userLogin : { userInfo }
+        } = getState()
+
+        const config = {
+            headers : {
+                Authorization : `Bearer ${userInfo.token}`
+            }
+        }
+
+        const { data } = await axios.post(`/api/students/provide-certificate`,{ courseId }, config)
+
+        dispatch({
+            type : PROVIDE_CERTIFICATE_SUCCESS,
+            payload : data
+        })
+    }catch(error) {
+        dispatch({
+            type : PROVIDE_CERTIFICATE_FAIL,
+            payload :
+            error.response && error.response.data.message ?
+            error.response.data.message :
+            error.message
+        })
+    }
+}
+
+
+
 
 
 

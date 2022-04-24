@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { loadMyCoursesAction } from '../../Actions/StudentActions/CourseActions'
@@ -33,7 +34,9 @@ const MyCourses = () => {
                 <div className="card-body">
                   <h5 className="card-title">{course.title}</h5>
                   <p className="card-text text-dark">{course.description}</p>
+                  <LinkContainer to ={ `/start-course/${course.slug}`}>
                   <a className="btn btn-success">Start Course</a>
+                  </LinkContainer>
                 </div>
               </div>
             </Col>

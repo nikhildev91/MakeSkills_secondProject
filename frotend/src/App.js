@@ -12,6 +12,8 @@ import EditCourse from './Screens/EditCourse';
 import CourseView from './Screens/Students/CourseView';
 import AddtoCart from './Screens/Students/AddtoCart'
 import MyCourses from './Screens/Students/MyCourses';
+import CourseStartPage from './Screens/Students/CourseStartPage';
+import Course from './Screens/Students/Course'
 function App() {
   return (
     <Router>
@@ -33,6 +35,8 @@ function App() {
           <Route path='/:slug' element={<CourseView />} />
           <Route path='/add-to-cart' element={<AddtoCart />} />
           <Route path='/my-courses' element={<MyCourses />} />
+          <Route path='/start-course/:slug' element={<CourseStartPage />} />
+          <Route path='/course/:slug' element={<Course />} />
         </Routes>
       </main>
     </Router>

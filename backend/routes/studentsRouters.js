@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router()
-import { studentProtect } from '../middlewares/authMiddlewares.js'
+import { studentProtect, isEnrolled } from '../middlewares/authMiddlewares.js'
 import { 
     listCourses,
     courseDetails,
@@ -9,7 +9,10 @@ import {
     cartItemRemove,
     checkEnrollment,
     freeEnrollment,
-    myCourseslist
+    myCourseslist,
+    markCompleted,
+    listCompleted,
+    provideCertificate
  } from '../controllers/studentsControllers/courseControllers.js'
 
 
@@ -22,5 +25,16 @@ import {
 
  router.get('/check-enrollment/:courseid', studentProtect, checkEnrollment )
  router.post('/free-enrollment/:courseid', studentProtect, freeEnrollment)
+ 
+ // reuse controller for get course details
+ router.get('/mycourses-details/:userid/:slug', studentProtect, isEnrolled, courseDetails)
+ router.get('/start-course/:userid/:slug', studentProtect, isEnrolled, courseDetails)
+
+ // mark completed
+ router.post('/mark-completed-lesson', studentProtect, markCompleted)
+ router.post('/list-completed', studentProtect, listCompleted)
+
+ // provide certificate
+ router.post('/provide-certificate', studentProtect, provideCertificate )
 
 export default router

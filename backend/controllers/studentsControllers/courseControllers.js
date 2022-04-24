@@ -3,6 +3,7 @@ import Course from '../../models/courseModel.js'
 import User from '../../models/userModels.js'
 import AddtoCart from '../../models/addtocartModel.js'
 import mongoose from 'mongoose'
+import Completed from '../../models/completed.js'
 
 
 // @desc Get Courses for listing in Students page
@@ -194,6 +195,83 @@ const myCourseslist = asyncHandler( async ( req, res ) => {
     .populate("instructorId", "_id fname lname").exec()
     res.json(courses)
 })
+
+
+// @desc mark completed course and lessons
+// @router /api/students/mark-lesson-completed
+// @access PRIVATE
+
+const markCompleted = asyncHandler( async ( req, res ) => {
+    const { courseId, lessonId} = req.body
+
+    // find if user with that course is already created
+    const existing = await Completed.findOne({
+        user : req.student._id,
+        course : courseId
+    }).exec();
+
+    if(existing){
+        // update 
+        const updated = await Completed.findOneAndUpdate({
+            user : req.student._id, course : courseId
+        },{
+            $addToSet : { lessons : lessonId }
+        }).exec()
+        res.json({ ok : true })
+    }else{
+        // create
+        const created = await Completed.create({
+            user : req.student._id,
+            course : courseId,
+            lessons : lessonId
+        })
+        res.json({ ok : true })
+    }
+})
+
+
+// @desc list completed course and lessons
+// @router /api/students/list-completed
+// @access PRIVATE
+
+const listCompleted = asyncHandler( async ( req, res ) => {
+    const { courseId } = req.body
+    const list = await Completed.findOne({ 
+        user : req.student._id,
+        course : courseId
+     }).exec();
+     list && res.json(list.lessons)
+})
+
+
+
+// @desc If the course is completed. Provide Cerificate to student
+// @router /api/students/provide-certificate
+// @access PRIVATE
+
+const provideCertificate = asyncHandler( async ( req, res ) => {
+    const { courseId } = req.body
+    const userId = req.student._id
+
+    // find course and length of lessons array
+    const course = await Course.findById(courseId).exec()
+    const numberOfLessons = course.lessons.length
+
+    // find the course in completes collection and length of completed lessons array length
+    const completedCourse = await Completed.findOne( { user : userId }).exec()
+    const numberOfCompletedLessons = completedCourse.lessons.length
+
+    if(numberOfCompletedLessons === numberOfLessons ){
+        res.json({
+            completed : true
+        })
+    }else{
+        res.json({
+            completed : false
+        })
+    }
+})
+
 export {
     listCourses,
     courseDetails,
@@ -202,5 +280,8 @@ export {
     cartItemRemove,
     checkEnrollment,
     freeEnrollment,
-    myCourseslist
+    myCourseslist,
+    markCompleted,
+    listCompleted,
+    provideCertificate
 }

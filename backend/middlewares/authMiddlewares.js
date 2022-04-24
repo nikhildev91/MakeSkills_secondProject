@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler'
 import jwt from 'jsonwebtoken'
+import Course from '../models/courseModel.js'
 import User from '../models/userModels.js'
 
 const instructorProtect = asyncHandler( async ( req, res, next ) => {
@@ -60,4 +61,22 @@ const studentProtect = asyncHandler( async ( req, res, next ) => {
     }
 })
 
-export { instructorProtect, studentProtect }
+const isEnrolled = asyncHandler( async ( req, res, next)=>{
+    const user = await User.findById(req.student._id).exec()
+    const course = await Course.findOne({ slug : req.params.slug }).exec()
+
+    // check if the course id is found in user's mycourses array
+    let ids = [];
+    for(let i = 0; i < user.myCourses.length; i++) {
+        ids.push(user.myCourses[i].toString())
+    }
+
+    if(!ids.includes(course._id.toString())){
+        res.status(403)
+        throw new Error("Unauthorized")
+    }else{
+        next()
+    }
+})
+
+export { instructorProtect, studentProtect, isEnrolled }
