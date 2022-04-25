@@ -10,13 +10,21 @@ import {
   MinusSquareFilled
 } from '@ant-design/icons'
 import ReactPlayer from 'react-player'
-import { listCourseCompleteAction, markLessonCompleteAction, provideCertificateAction, startCourseAction } from '../../Actions/StudentActions/CourseActions'
+import { 
+  listCourseCompleteAction, 
+  markLessonCompleteAction, 
+  provideCertificateAction, 
+  startCourseAction 
+} from '../../Actions/StudentActions/CourseActions'
 const { Item } = Menu
+
+
 const Course = () => {
   const [ clicked, setClicked ] = useState(0)
   const [ collapsed, setCollapsed ] = useState(false)
   const [played, setPlayed] = useState(0);
   const [ Listcompleted, setListCompleted ] = useState([])
+  const [ certificateDownload, setCertificateDownload ] = useState(false)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { slug } = useParams()
@@ -62,9 +70,10 @@ const Course = () => {
 
   useEffect(() => {
     if( certificate && certificate.completed ){
-      navigate('/')
+      setCertificateDownload(true)
+      
     }
-  }, [ certificate ])
+  }, [ certificate, dispatch ])
 
   
 
@@ -72,9 +81,14 @@ const Course = () => {
     const courseId = course && course.courseDetails && course.courseDetails._id
     dispatch(markLessonCompleteAction( courseId, lessonId ))
   }
+
+  const downloadCertificate = () => {
+    navigate(`/course-certificate/${course && course.courseDetails && course.courseDetails.slug}`)
+  }
   return (
       <div className="container-fluid">
-        {/* <pre>{JSON.stringify(course, null, 4)}</pre> */}
+       
+        {/* <pre>{JSON.stringify(certificate, null, 4)}</pre> */}
         <div className="row">
           <div style={{ maxWidth : "320px"}}>
             <div className=''>
@@ -105,10 +119,15 @@ const Course = () => {
           </div>
 
           <div className="col">
-            {JSON.stringify(played.toFixed())}
+            {/* {JSON.stringify(played.toFixed())} */}
             <>
                 { course && course.courseDetails && course.courseDetails.lessons && (
-                  <h2 className='text-light'>{course.courseDetails.lessons[clicked].name}</h2>
+                  <div>
+                    <span className='text-light h1'>{course.courseDetails.lessons[clicked].name}</span>
+                    { certificateDownload && (
+                    <div className="btn btn-success" style={{ float : "right", margin : "10px"}} onClick={downloadCertificate}>Download Certificate</div>
+                    )}
+                  </div>
                 )}
             </>
             { course && course.courseDetails && course.courseDetails.lessons[clicked].video && (

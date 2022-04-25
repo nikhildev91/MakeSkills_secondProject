@@ -23,6 +23,7 @@ import {
     MYCOURSE_START_SUCCESS,
     PROVIDE_CERTIFICATE_FAIL,
     PROVIDE_CERTIFICATE_REQUEST,
+    PROVIDE_CERTIFICATE_RESET,
     PROVIDE_CERTIFICATE_SUCCESS,
     REMOVE_CART_ITEM_FAIL,
     REMOVE_CART_ITEM_REQUEST,
@@ -195,6 +196,8 @@ export const provideCertificateReducer = (state = { }, action ) => {
             return { loading : false, certificate : action.payload }
         case PROVIDE_CERTIFICATE_FAIL : 
             return { loading : false, error : action.payload }
+        case PROVIDE_CERTIFICATE_RESET : 
+            return { }
         default : 
             return state
     }

@@ -10,7 +10,8 @@ import {
     courseUpdateReducer, 
     courseViewReducer, 
     lessonCreateReducer, 
-    lessonUpdateReducer
+    lessonUpdateReducer,
+    publishedCoursesListReducer
 } from './Reducers/CourseReducers'
 import { 
     cartListReducer,
@@ -26,6 +27,10 @@ import {
     studentCourseDetailsReducer,
     studentCourseListReducer 
 } from './Reducers/StudentReducers./CoursesReducers'
+import { 
+    listInstructorsReducer, 
+    listStudentsReducer 
+} from './Reducers/AdminReducers'
 
 
 const reducer = combineReducers({
@@ -38,6 +43,7 @@ const reducer = combineReducers({
     courseUpdate : courseUpdateReducer,
     publishCourse : coursePublishReducer,
     unpublishCourse : courseUnpublishReducer,
+    publishedCoursesList : publishedCoursesListReducer,
     
     lessonCreate : lessonCreateReducer,
     lessonUpdate : lessonUpdateReducer,
@@ -53,7 +59,10 @@ const reducer = combineReducers({
     startCourse : myCourseStartReducer,
     markLessonCompleted : markLessonCompleteReducer,
     listCompleted : listCompleteReducer,
-    provideCertificate : provideCertificateReducer
+    provideCertificate : provideCertificateReducer,
+
+    listInstructors : listInstructorsReducer,
+    studentsLists : listStudentsReducer
 })
 
 const userInfoFromStorage = localStorage.getItem('userInfo') 

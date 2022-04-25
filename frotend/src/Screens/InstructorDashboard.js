@@ -1,8 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { Tab, Row, Col, Nav } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 
 const InstructorDashboard = () => {
+  const navigate = useNavigate()
+
+  const userLogin = useSelector( state => state.userLogin )
+  const { userInfo } = userLogin
+
+  useEffect(() => {
+    if(!userInfo || !userInfo.isInstructor ){
+      navigate('/')
+    }
+  },[ userInfo ])
   return (
     <main className='p-5'>
     <Tab.Container id="left-tabs-example" defaultActiveKey="dashboard">

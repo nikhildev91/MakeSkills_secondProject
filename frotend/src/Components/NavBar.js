@@ -114,6 +114,15 @@ const NavBar = () => {
         </NavDropdown>
       </Nav>
       }
+      {
+        userInfo && userInfo.isAdmin && 
+        <Nav className="ms-auto">
+        <NavDropdown title={userInfo.fname} id="basic-nav-dropdown" style={{ marginRight : "120px"}}>
+          <NavDropdown.Divider />
+          <NavDropdown.Item onClick={handlelogout}>Logout</NavDropdown.Item>
+        </NavDropdown>
+      </Nav>
+      }
     </Navbar.Collapse>
 </Navbar>
 

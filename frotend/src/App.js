@@ -14,6 +14,12 @@ import AddtoCart from './Screens/Students/AddtoCart'
 import MyCourses from './Screens/Students/MyCourses';
 import CourseStartPage from './Screens/Students/CourseStartPage';
 import Course from './Screens/Students/Course'
+import CertificatePDF from './Actions/CertificatePDF';
+import Dashboard from './Screens/Admin/Dashboard';
+import ManageInstructors from './Screens/Admin/ManageInstructors';
+import ManageStudents from './Screens/Admin/ManageStudents';
+import AdminManageCourse from './Screens/Admin/ManageCourse';
+import SalesReport from './Screens/Admin/SalesReport';
 function App() {
   return (
     <Router>
@@ -37,6 +43,13 @@ function App() {
           <Route path='/my-courses' element={<MyCourses />} />
           <Route path='/start-course/:slug' element={<CourseStartPage />} />
           <Route path='/course/:slug' element={<Course />} />
+          <Route path='/course-certificate/:slug' element={<CertificatePDF />} />
+
+          <Route path='/admin' element={<Dashboard />} />
+          <Route path='/admin/manage-courses' element={<AdminManageCourse />} />
+          <Route path='/admin/manage-students' element={<ManageStudents />} />
+          <Route path='/admin/manage-instructors' element={<ManageInstructors />} />
+          <Route path='/admin/sales-report' element={<SalesReport />} />
         </Routes>
       </main>
     </Router>

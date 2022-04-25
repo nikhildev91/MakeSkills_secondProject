@@ -9,6 +9,7 @@ import {
     removeLesson,
     updateLesson,
     publishCourse,
+    publishedCoursesList,
     unPublishCourse
         } from "../controllers/courseControllers.js";
 
@@ -26,6 +27,7 @@ router.post('/add-lesson/:slug', instructorProtect, addLesson)
 router.put('/update-course/:slug', instructorProtect, updateCourse)
 router.put('/update-course/:slug/:lessonid', removeLesson)
 router.put('/update-lesson/:slug/:lessonid', instructorProtect, updateLesson)
+router.get('/published-courses', instructorProtect, publishedCoursesList)
 
 // publish course
 

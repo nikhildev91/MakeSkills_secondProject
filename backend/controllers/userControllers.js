@@ -19,6 +19,7 @@ const authUser = asynchandler( async ( req, res ) => {
             email: user.email,
             isInstructor : user.isInstructor,
             isStudent : user.isStudent,
+            isAdmin : user.isAdmin,
             token : generateToken(user._id)  
         })
     } else{
@@ -59,6 +60,7 @@ const registerUser = asynchandler( async ( req, res ) => {
             email: user.email,
             isInstructor : user.isInstructor,
             isStudent : user.isStudent,
+            isAdmin : user.isAdmin,
             token : generateToken(user._id)
         })
     }else{

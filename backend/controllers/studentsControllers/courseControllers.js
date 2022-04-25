@@ -173,11 +173,17 @@ const checkEnrollment = asyncHandler( async (req, res) => {
 const freeEnrollment = asyncHandler( async (req, res) => {
     // check if course is free or paid 
     const course = await Course.findById(req.params.courseid).exec()
-    console.log(course);
     if(course.paid) return
     const result = await User.findByIdAndUpdate(req.student._id, {
         $addToSet : { myCourses : course._id }
     }, { new : true }).exec();
+
+    // update studentsCount in course document
+    const updateCourse = await Course.findByIdAndUpdate(course._id,
+        {
+            $inc : { studentsCount : 1 }
+        })
+        console.log(updateCourse);
     res.json({
         message : ("enrollment sucess"),
         course 
@@ -258,7 +264,7 @@ const provideCertificate = asyncHandler( async ( req, res ) => {
     const numberOfLessons = course.lessons.length
 
     // find the course in completes collection and length of completed lessons array length
-    const completedCourse = await Completed.findOne( { user : userId }).exec()
+    const completedCourse = await Completed.findOne( { user : userId, course : courseId }).exec()
     const numberOfCompletedLessons = completedCourse.lessons.length
 
     if(numberOfCompletedLessons === numberOfLessons ){

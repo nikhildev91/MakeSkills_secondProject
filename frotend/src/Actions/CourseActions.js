@@ -23,7 +23,10 @@ import {
     PUBLISH_COURSE_FAIL,
     UNPUBLISH_COURSE_REQUEST,
     UNPUBLISH_COURSE_SUCCESS,
-    UNPUBLISH_COURSE_FAIL
+    UNPUBLISH_COURSE_FAIL,
+    PUBLISHED_COURSES_LIST_REQUEST,
+    PUBLISHED_COURSES_LIST_SUCCESS,
+    PUBLISHED_COURSES_LIST_FAIL
 } from '../Constants/CourseConstants'
 
 export const createCourseAction = (title, description, category, paid, price, image) => async ( dispatch, getState ) => {
@@ -298,6 +301,41 @@ export const unpublishCourseAction = (courseId) => async ( dispatch, getState ) 
         })
     }
 }
+
+
+export const publishedCoursesListAction = () => async ( dispatch, getState ) => {
+    try{
+        dispatch({
+            type : PUBLISHED_COURSES_LIST_REQUEST
+        })
+
+        const {
+            userLogin : { userInfo }
+        } = getState()
+
+        const config = {
+            headers : {
+                Authorization : `Bearer ${userInfo.token}`
+            }
+        }
+
+        const { data } = await axios.get(`/api/instructors/published-courses`, config)
+
+        dispatch({
+            type : PUBLISHED_COURSES_LIST_SUCCESS,
+            payload : data
+        })
+    }catch(error) {
+        dispatch({
+            type : PUBLISHED_COURSES_LIST_FAIL,
+            payload :
+            error.response && error.response.data.message ?
+            error.response.data.message :
+            error.message
+        })
+    }
+}
+
 
 
 

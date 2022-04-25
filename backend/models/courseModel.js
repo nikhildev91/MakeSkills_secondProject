@@ -60,7 +60,11 @@ const courseSchema = mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref : "User"
     },
-    lessons: [ lessonSchema ]
+    lessons: [ lessonSchema ],
+    studentsCount :{
+        type : Number,
+        default : 0
+    }
 }, {timestamps : true})
 
 

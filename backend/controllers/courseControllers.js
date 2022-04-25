@@ -187,6 +187,12 @@ const updateLesson = asyncHandler( async ( req, res ) => {
     }
 })
 
+
+
+// @desc Publish course and live of Students
+// @router /api/instructors/publish-course/:slug
+// @access PRIVATE
+
 const publishCourse = asyncHandler( async (req, res ) => {
     const courseId = req.params.courseid
     const course = await Course.findById(courseId).select('instructorId').exec()
@@ -206,6 +212,12 @@ const publishCourse = asyncHandler( async (req, res ) => {
 
 })
 
+
+
+// @desc Unpublish course and remove live from students
+// @router /api/instructors/unpublished-course/:slug
+// @access PRIVATE
+
 const unPublishCourse = asyncHandler( async (req, res) => {
     const courseId = req.params.courseid
     const course = await Course.findById(courseId).select('instructorId').exec()
@@ -223,6 +235,16 @@ const unPublishCourse = asyncHandler( async (req, res) => {
     res.json(updated)
 })
 
+
+
+// @desc get instructor published course 
+// @router /api/instructors/published-courses
+
+const publishedCoursesList = asyncHandler( async ( req, res ) => {
+    const courses = await Course.find({ instructorId : req.instr._id, published : true }).exec()
+    res.json(courses)
+})
+
 export { 
     createCourse, 
     courseLists, 
@@ -232,6 +254,7 @@ export {
     removeLesson,
     updateLesson,
     publishCourse,
-    unPublishCourse
+    unPublishCourse,
+    publishedCoursesList
 
         }

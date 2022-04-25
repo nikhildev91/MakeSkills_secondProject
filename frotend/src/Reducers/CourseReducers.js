@@ -28,7 +28,10 @@ import {
     UNPUBLISH_COURSE_SUCCESS,
     UNPUBLISH_COURSE_FAIL,
     PUBLISH_COURSE_RESET,
-    UNPUBLISH_COURSE_RESET
+    UNPUBLISH_COURSE_RESET,
+    PUBLISHED_COURSES_LIST_REQUEST,
+    PUBLISHED_COURSES_LIST_SUCCESS,
+    PUBLISHED_COURSES_LIST_FAIL
 } from '../Constants/CourseConstants'
 
 export const courseCreateReducer = (state = { }, action ) => {
@@ -146,6 +149,19 @@ export const courseUnpublishReducer = (state = { }, action ) => {
             return { loading : false, error : action.payload }
             case UNPUBLISH_COURSE_RESET :
                 return { unpublished : false }
+        default : 
+            return state
+    }
+}
+
+export const publishedCoursesListReducer = (state = { }, action ) => {
+    switch ( action.type ) {
+        case PUBLISHED_COURSES_LIST_REQUEST :
+            return { loading : true }
+        case PUBLISHED_COURSES_LIST_SUCCESS :
+            return { loading : false, courses : action.payload }
+        case PUBLISHED_COURSES_LIST_FAIL : 
+            return { loading : false, error : action.payload }
         default : 
             return state
     }
