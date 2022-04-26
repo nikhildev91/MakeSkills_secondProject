@@ -21,7 +21,36 @@ const listStudents = asyncHandler( async ( req, res ) => {
     const students = await User.find( { isStudent : true }).exec()
     res.json(students)
 })
+
+
+/// @desc block students and instructors
+// @router /api/admin/block-student and /api/admin/block-instructor
+// @access PRIVATE
+
+const blockUser = asyncHandler( async (req, res ) => {
+    const { userId } = req.body
+    const block = await User.findByIdAndUpdate(userId,
+        {
+            $set: {
+                isBlock : true
+            }
+        }).exec()
+        res.json({ ok : true })
+})
+
+const unblockuser = asyncHandler( async ( req, res ) => {
+    const { userId } = req.body
+    const unblock = await User.findByIdAndUpdate( userId,
+        {
+            $set: {
+                isBlock : false
+            }
+        }).exec()
+        res.json( { ok : true } )
+})
 export {
     listInstructors,
-    listStudents
+    listStudents,
+    blockUser,
+    unblockuser
 }

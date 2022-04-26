@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Table, Nav, Col, Row, Tab } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
-import { loadAllStudents } from '../../Actions/AdminActions'
+import { blockStudentAction, loadAllStudents, unBlockStudentAction } from '../../Actions/AdminActions'
 
 const ManageStudents = () => {
     const navigate = useNavigate()
@@ -13,16 +13,23 @@ const ManageStudents = () => {
 
     const studentsLists = useSelector( state => state.studentsLists )
     const { studentsList } = studentsLists
-
     useEffect(() => {
         if(!userInfo || !userInfo.isAdmin){
             navigate('/')
         }
         dispatch(loadAllStudents())
-    }, [ userInfo ])
+    }, [ userInfo, dispatch ])
+
+    const blockUser = (userId) => {
+      dispatch(blockStudentAction(userId))
+    }
+
+    const unBlockUser = (userId) => {
+      dispatch(unBlockStudentAction( userId ))
+    }
   return (
     <main className='p-5'>
-      <pre>{JSON.stringify(studentsList, null, 4)}</pre>
+      {/* <pre>{JSON.stringify(studentsList, null, 4)}</pre> */}
     <Tab.Container id="left-tabs-example" defaultActiveKey="manageStudents">
             <Row>
                 <Col sm={2}>
@@ -68,18 +75,19 @@ const ManageStudents = () => {
                             <th className='text-center'>Action</th>
                           </tr>
                           </thead>
-                          {/* <tbody>
+                          <tbody>
                             {
-                              instructorsList && instructorsList.map( instructor => (
+                              studentsList && studentsList.map( student => (
                             <tr>
-                              <td>{instructor.fname + " " + instructor.lname}</td>
-                              <td>{instructor.email}</td>
-                              <td>{instructor.fname}</td>
-                              <td>{instructor.fname}</td>
+                              <td className='p-4'>{student.fname + " " + student.lname}</td>
+                              <td className='p-4'>{student.email}</td>
+                              <td className='p-4'>{student.isBlock ? "Blocked" : "Unblocked"}</td>
+                              <td className='p-4'>{student.isBlock ? <span onClick={() => { unBlockUser (student._id)}} className='btn btn-success d-flex justify-content-center'>UnBlock</span>
+                              : <span onClick={() => { blockUser (student._id)}} className='btn btn-danger d-flex justify-content-center'>Block</span>}</td>
                             </tr>
                               ))
                             }
-                          </tbody> */}
+                          </tbody>
                       </Table>
                     </div>
                     </Tab.Pane>

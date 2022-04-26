@@ -9,6 +9,7 @@ import { loadAllInstructors } from '../../Actions/AdminActions'
 const ManageInstructors = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    
 
     const userLogin = useSelector( state => state.userLogin )
     const { userInfo } = userLogin

@@ -35,6 +35,10 @@ const userSchema = mongoose.Schema({
         default : false,
         required : true
     },
+    isBlock : {
+        type : Boolean,
+        default : false
+    },
     myCourses :[
         {
             type : mongoose.Schema.Types.ObjectId, 
