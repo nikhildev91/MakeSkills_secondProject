@@ -1,21 +1,16 @@
-.courseDetailsTitleBox{
-    background-color: #000;
-}
-
-h1{
-    color: #fff;
-}
-
-.courseDetailsBox {
-    background-color: #fff;
-    min-height: 60vh;
-}
-
-.DescriptionBox{
-    border: black solid 1px;
-    color: black;
-}
-
-.addtoCart {
+.courseDetailsPage{
+    background-color: rgb(227, 242, 237);
     min-height: 80vh;
+}
+
+.card-box{
+    background-color: rgb(248, 249, 251);
+    min-height: 35vh;
+}
+
+.lessons-card{
+    background-color: rgb(248, 249, 251);
+    min-height: 35vh;
+    max-width: 100%;
+    min-width: 100%;
 }

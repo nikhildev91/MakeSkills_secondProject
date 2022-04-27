@@ -66,7 +66,7 @@ const Course = () => {
       dispatch(provideCertificateAction(course && course.courseDetails && course.courseDetails._id))
       
     }
-  }, [ completedList])
+  }, [ completedList, dispatch ])
 
   useEffect(() => {
     if( certificate && certificate.completed ){
@@ -77,9 +77,10 @@ const Course = () => {
 
   
 
-  const markCompleted = (lessonId) => {
+  const markCompleted = (lessonId, clicked) => {
     const courseId = course && course.courseDetails && course.courseDetails._id
     dispatch(markLessonCompleteAction( courseId, lessonId ))
+    setClicked(clicked+1)
   }
 
   const downloadCertificate = () => {
@@ -140,7 +141,7 @@ const Course = () => {
                   height="40%"
                   controls
                   onStart={() => console.log("video start")}
-                  onEnded={() => markCompleted(course.courseDetails.lessons[clicked]._id)}
+                  onEnded={() => markCompleted(course.courseDetails.lessons[clicked]._id, clicked)}
                   onProgress={(progress) => {
                     setPlayed(progress.playedSeconds);
                   }}

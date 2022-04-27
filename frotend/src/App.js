@@ -38,7 +38,7 @@ function App() {
           <Route path='/instructor/course-view/:slug' element={ <InstructorCourseView /> } />
           <Route path='/instructor/edit-course/:slug' element={ <EditCourse /> } />
 
-          <Route path='/:slug' element={<CourseView />} />
+          <Route path='/course-details/:slug' element={<CourseView />} />
           <Route path='/add-to-cart' element={<AddtoCart />} />
           <Route path='/my-courses' element={<MyCourses />} />
           <Route path='/start-course/:slug' element={<CourseStartPage />} />

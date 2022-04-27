@@ -3,6 +3,7 @@ body{
     padding: 0;
 }
 
+
 .cartListBox{
     background-color: #000;
     min-height: 80vh;
@@ -12,6 +13,40 @@ body{
     color : white
 }
 
+
+.tryForFreeButton:hover{
+    background-color: rgb(47, 61, 94);
+    color: #fff;
+}
+
 /* div{
     border: red solid 2px;
 } */
+
+.banner2{
+    background-image: url('../public/searchbarBanner.webp');
+    height: 450px;
+    width: auto;
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+}
+
+.gradiant-banner2{
+    background :#37c7ac;
+    opacity: 0.8;
+    width: 100%;
+    height: 450px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.searchButton{
+    background-color: rgb(47, 61, 94);
+    color: #fff;
+    opacity: 1;
+}
+
+

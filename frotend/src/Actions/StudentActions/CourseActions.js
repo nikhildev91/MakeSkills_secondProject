@@ -39,23 +39,13 @@ import {
 } from "../../Constants/StudentConstants/CourseConstants";
 
 
-export const studentCourseListAction = () => async ( dispatch, getState ) => {
+export const studentCourseListAction = () => async ( dispatch ) => {
     try{
         dispatch({
             type : STUDENTS_COURSE_LIST_REQUEST
         })
 
-        const {
-            userLogin : { userInfo }
-        } = getState()
-
-        const config = {
-            headers : {
-                Authorization : `Bearer ${userInfo.token}`
-            }
-        }
-
-        const { data } = await axios.get(`/api/students/courses`, config)
+        const { data } = await axios.get(`/api/students/courses`)
 
         dispatch({
             type : STUDENTS_COURSE_LIST_SUCCESS,
@@ -73,23 +63,13 @@ export const studentCourseListAction = () => async ( dispatch, getState ) => {
 }
 
 
-export const studentCourseViewAction = (slug) => async ( dispatch, getState ) => {
+export const studentCourseViewAction = (slug) => async ( dispatch ) => {
     try{
         dispatch({
             type : STUDENTS_COURSE_DETAILS_REQUEST
         })
 
-        const {
-            userLogin : { userInfo }
-        } = getState()
-
-        const config = {
-            headers : {
-                Authorization : `Bearer ${userInfo.token}`
-            }
-        }
-
-        const { data } = await axios.get(`/api/students/course-view/${slug}`, config)
+        const { data } = await axios.get(`/api/students/course-view/${slug}`)
 
         dispatch({
             type : STUDENTS_COURSE_DETAILS_SUCCESS,

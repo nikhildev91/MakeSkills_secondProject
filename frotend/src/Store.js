@@ -28,9 +28,11 @@ import {
     studentCourseListReducer 
 } from './Reducers/StudentReducers./CoursesReducers'
 import { 
+    blockInstructorsReducer,
     blockStudentsReducer,
     listInstructorsReducer, 
     listStudentsReducer, 
+    unBlockInstructorsReducer, 
     unBlockStudentsReducer
 } from './Reducers/AdminReducers'
 
@@ -66,7 +68,9 @@ const reducer = combineReducers({
     listInstructors : listInstructorsReducer,
     studentsLists : listStudentsReducer,
     blockStudent : blockStudentsReducer,
-    unBlockStudent : unBlockStudentsReducer
+    unBlockStudent : unBlockStudentsReducer,
+    blockInstructor : blockInstructorsReducer,
+    unBlockInstructor : unBlockInstructorsReducer
 })
 
 const userInfoFromStorage = localStorage.getItem('userInfo') 

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-toastify/dist/ReactToastify.css';
+import './bootstrap.min.css'
 import './antd.css'
 import './index.css'
 import { Provider } from 'react-redux';

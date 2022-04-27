@@ -3,7 +3,7 @@ import { Table, Nav, Col, Row, Tab } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { loadAllInstructors } from '../../Actions/AdminActions'
+import { blockInstructorAction, loadAllInstructors, unBlockInstructorAction } from '../../Actions/AdminActions'
 
 
 const ManageInstructors = () => {
@@ -22,7 +22,15 @@ const ManageInstructors = () => {
             navigate('/')
         }
         dispatch(loadAllInstructors())
-    },[ userInfo ])
+    },[ dispatch, userInfo ])
+
+    const unBlockInstructor = (userId) => {
+      dispatch(unBlockInstructorAction(userId))
+    }
+
+    const blockInstructor = (userId) => {
+      dispatch(blockInstructorAction(userId))
+    }
   return (
     <main className='p-5'>
       {/* <pre>{JSON.stringify(instructorsList, null, 4)}</pre> */}
@@ -74,11 +82,12 @@ const ManageInstructors = () => {
                           <tbody>
                             {
                               instructorsList && instructorsList.map( instructor => (
-                            <tr>
-                              <td>{instructor.fname + " " + instructor.lname}</td>
-                              <td>{instructor.email}</td>
-                              <td>{instructor.fname}</td>
-                              <td>{instructor.fname}</td>
+                            <tr key={instructor._id}>
+                              <td className='p-3'>{instructor.fname + " " + instructor.lname}</td>
+                              <td className='p-3'>{instructor.email}</td>
+                              <td className='p-3'>{instructor.isBlock ? "Blocked" : "unBlocked"}</td>
+                              <td className='p-3'>{instructor.isBlock ? <span onClick={() => unBlockInstructor(instructor._id)} className='btn btn-success d-flex justify-content-center'>UnBlock</span>
+                              : <span onClick={() => blockInstructor(instructor._id)} className='btn btn-danger d-flex justify-content-center'>Block</span>}</td>
                             </tr>
                               ))
                             }

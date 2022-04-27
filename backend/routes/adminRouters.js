@@ -13,6 +13,8 @@ router.get('/get-all-instructors', adminProtect, listInstructors)
 router.get('/get-all-students', adminProtect, listStudents)
 router.post('/block-student', adminProtect, blockUser)
 router.post('/unblock-student', adminProtect, unblockuser)
+router.post('/block-instructor', adminProtect, blockUser)
+router.post('/unblock-instructor', adminProtect, unblockuser)
 
 
 export default router

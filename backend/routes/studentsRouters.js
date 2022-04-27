@@ -16,8 +16,8 @@ import {
  } from '../controllers/studentsControllers/courseControllers.js'
 
 
- router.get('/courses', studentProtect, listCourses )
- router.get('/course-view/:slug', studentProtect, courseDetails)
+ router.get('/courses', listCourses )
+ router.get('/course-view/:slug', courseDetails)
  router.post('/add-to-cart/:userId/:slug', addtocart)
  router.get('/add-to-cart/:userId', studentProtect, cartList)
  router.post('/remove-cart-item/:userid/:itemid/:cartid', cartItemRemove)

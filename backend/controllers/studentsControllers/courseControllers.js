@@ -11,7 +11,7 @@ import Completed from '../../models/completed.js'
 // @access PRIVATE
 
 const listCourses = asyncHandler( async (req, res) => {
-    const courses = await Course.find({ published : true }).limit(6).exec()
+    const courses = await Course.find({ published : true }).populate("instructorId", '_id fname lname').limit(4).exec()
     if(!courses){
         res.status(400)
         throw new Error("Not Found Courses")

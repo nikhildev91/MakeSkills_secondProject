@@ -1,0 +1,76 @@
+.banner1{
+    background-image: url("../../public/bg.png");
+    height: 600px;
+    width: auto;
+    background-size: cover;
+    background-repeat: no-repeat;
+    align-items: center;
+    display: flex;
+}
+
+.banner-short-title{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.banner1-title{
+    font-weight: bold;
+    font-size: 50px;
+}
+
+.banner-short-para{
+    color: #000;
+    font-weight: normal;
+}
+
+.min-title-wrapper{
+    margin-top: 100px;
+}
+
+.ourProgrammes{
+    font-weight: bold;
+}
+
+.mini-course-title{
+    font-weight: bold;
+    color: green;
+}
+
+.card{
+    height: 520px;
+    width: 28rem;
+    background-color: rgb(248, 249, 251);
+}
+
+.card-img-top{
+    height: 230px;
+    width: 100%;
+    display: flex;
+}
+
+.sellingPrice{
+    font-size: 25px;
+    font-weight: bold;
+    color: green;
+}
+
+.realPrice{
+    font-size: 20px;
+    font-weight: bold;
+    color: green;
+}
+
+.reg-title{
+    font-size: 20px;
+    font-weight: normal;
+}
+
+.submitButton{
+    background-color: rgb(47, 61, 94);
+    color: #fff;
+}
+
+.submitButton:hover{
+    background-color: rgb(120, 220, 178);
+    color: #fff;
+}
