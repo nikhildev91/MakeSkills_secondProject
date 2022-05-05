@@ -36,7 +36,11 @@ import {
     STUDENTS_COURSE_DETAILS_SUCCESS,
     STUDENTS_COURSE_LIST_FAIL, 
     STUDENTS_COURSE_LIST_REQUEST, 
-    STUDENTS_COURSE_LIST_SUCCESS 
+    STUDENTS_COURSE_LIST_SUCCESS,
+    COURSE_CREATE_REVIEW_REQUEST,
+    COURSE_CREATE_REVIEW_SUCCESS,
+    COURSE_CREATE_REVIEW_FAIL,
+    COURSE_CREATE_REVIEW_RESET
 } from "../../Constants/StudentConstants/CourseConstants"
 
 export const studentCourseListReducer = (state = { }, action ) => {
@@ -197,6 +201,21 @@ export const provideCertificateReducer = (state = { }, action ) => {
         case PROVIDE_CERTIFICATE_FAIL : 
             return { loading : false, error : action.payload }
         case PROVIDE_CERTIFICATE_RESET : 
+            return { }
+        default : 
+            return state
+    }
+}
+
+export const createReviewReducer = (state = { }, action ) => {
+    switch ( action.type ) {
+        case COURSE_CREATE_REVIEW_REQUEST :
+            return { loading : true }
+        case COURSE_CREATE_REVIEW_SUCCESS :
+            return { loading : false, reviewStatus : true }
+        case COURSE_CREATE_REVIEW_FAIL : 
+            return { loading : false, error : action.payload }
+        case COURSE_CREATE_REVIEW_RESET : 
             return { }
         default : 
             return state

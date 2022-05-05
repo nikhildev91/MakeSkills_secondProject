@@ -3,11 +3,12 @@ body{
     padding: 0;
 }
 
-
-.cartListBox{
-    background-color: #000;
-    min-height: 80vh;
+.cardBox{
+    border-radius: 5px;
+    min-height: 30vh;
+    background-color: aliceblue;
 }
+
 
 .Lessons_List{
     color : white

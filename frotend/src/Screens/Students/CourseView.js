@@ -105,11 +105,19 @@ const CourseView = () => {
               <div className="mt-5">
                 {
                   courseView && courseView.courseDetails && courseView.courseDetails.paid ?
-                  <>
+                  <> 
+                  {
+                    enrolled && enrolled.status ?
+                    <LinkContainer to='/my-courses'>
+                      <span className="btn btn-outline-primary btn-block w-100"><i className="fa-solid fa-bullseye-arrow"></i> Go To Your Courses</span>
+                    </LinkContainer> :
+                    <>
                     <LinkContainer to={`/add-to-wishlist/${courseView && courseView.courseDetails.slug}`}>
                       <span className="btn btn-outline-dark btn-block w-100"><i className="fa-solid fa-heart"></i> Add to Wishlist</span>
                     </LinkContainer>
-                    <span onClick={handleAddtoCart} className="btn btn-outline-success btn-block mt-3 w-100"><i className="fa-solid fa-cart-shopping"></i> Add to Cart</span> 
+                    <span onClick={handleAddtoCart} className="btn btn-outline-success btn-block mt-3 w-100"><i className="fa-solid fa-cart-shopping"></i> Add to Cart</span>
+                    </> 
+                  }
                   </> : 
                   <>
                     {
@@ -136,7 +144,7 @@ const CourseView = () => {
                 {
                   courseView && courseView.courseDetails && courseView.courseDetails.lessons && courseView.courseDetails.lessons.map( ( lesson, index ) => (
                   <Accordion.Item eventKey={index}>
-                    <Accordion.Header><Avatar>{index+1}</Avatar> &nbsp; &nbsp;{lesson.name}</Accordion.Header>
+                    <Accordion.Header><Avatar>{index+1}</Avatar> &nbsp; &nbsp;<b>{lesson.name}</b></Accordion.Header>
                     <Accordion.Body>{lesson.content}</Accordion.Body>
                   </Accordion.Item>
                   ))

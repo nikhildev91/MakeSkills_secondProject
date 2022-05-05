@@ -208,7 +208,7 @@ const myCourseslist = asyncHandler( async ( req, res ) => {
 // @access PRIVATE
 
 const markCompleted = asyncHandler( async ( req, res ) => {
-    const { courseId, lessonId} = req.body
+    const { courseId, lessonId, note } = req.body
 
     // find if user with that course is already created
     const existing = await Completed.findOne({
@@ -217,19 +217,37 @@ const markCompleted = asyncHandler( async ( req, res ) => {
     }).exec();
 
     if(existing){
+        // check already lesson completed or not
+        var found = false;
+        for(let i = 0; i < existing.lessons.length; i++){
+            if(existing.lessons[i].lesson === lessonId ){
+                found = true;
+            }
+        }
+
+        if(found){
+            res.json({ok : true})
+        }else{
         // update 
         const updated = await Completed.findOneAndUpdate({
             user : req.student._id, course : courseId
         },{
-            $addToSet : { lessons : lessonId }
+            $push : { lessons : {
+                lesson : lessonId,
+                notes : note
+            } }
         }).exec()
         res.json({ ok : true })
+    }
     }else{
         // create
         const created = await Completed.create({
             user : req.student._id,
             course : courseId,
-            lessons : lessonId
+            lessons : {
+                lesson : lessonId,
+                notes : note
+            }
         })
         res.json({ ok : true })
     }
@@ -242,11 +260,17 @@ const markCompleted = asyncHandler( async ( req, res ) => {
 
 const listCompleted = asyncHandler( async ( req, res ) => {
     const { courseId } = req.body
+    const lessons = []
     const list = await Completed.findOne({ 
         user : req.student._id,
         course : courseId
      }).exec();
-     list && res.json(list.lessons)
+     if(list){
+        for(let i = 0; i < list.lessons.length; i++){
+            lessons.push(list.lessons[i].lesson)
+        }
+     }
+    res.json({ lesson : lessons ,  note : list.lessons})
 })
 
 
@@ -278,6 +302,40 @@ const provideCertificate = asyncHandler( async ( req, res ) => {
     }
 })
 
+
+// @desc If Create new Review
+// @router POST /api/students/course-review/:courseid
+// @access PRIVATE
+
+const createCourseReview = asyncHandler( async ( req, res ) => {
+    const { rating , comment } = req.body
+    const course = await Course.findById( req.params.courseid )
+    if(course){
+        const alreadyReviewed = course.reviews.find( r => r.user.toString() === "6256d256e7f41f16950ae7ee")
+        if(alreadyReviewed){
+            res.status(400)
+            throw new Error("Course Already Reviewed")
+        }
+
+        const review ={
+            name : "jihu",
+            rating : Number(rating),
+            comment : comment,
+            user : "6256d256e7f41f16950ae7ee"
+        }
+        course.reviews.push(review)
+        course.numReviews = course.reviews.length
+        course.rating = course.reviews.reduce(( acc, item ) => item.rating + acc, 0)
+        / course.reviews.length
+
+        await course.save()
+        res.status(201).json({ message : "Review Added"})
+    }else{
+        res.status(400)
+        throw new Error("Course not found")
+    }
+})
+
 export {
     listCourses,
     courseDetails,
@@ -289,5 +347,6 @@ export {
     myCourseslist,
     markCompleted,
     listCompleted,
-    provideCertificate
+    provideCertificate,
+    createCourseReview
 }

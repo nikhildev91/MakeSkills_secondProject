@@ -15,6 +15,7 @@ import {
 } from './Reducers/CourseReducers'
 import { 
     cartListReducer,
+    createReviewReducer,
     freeEnrollmentCourseReducer,
     listCompleteReducer,
     listMyCoursesReducer,
@@ -64,6 +65,7 @@ const reducer = combineReducers({
     markLessonCompleted : markLessonCompleteReducer,
     listCompleted : listCompleteReducer,
     provideCertificate : provideCertificateReducer,
+    courseReview : createReviewReducer,
 
     listInstructors : listInstructorsReducer,
     studentsLists : listStudentsReducer,

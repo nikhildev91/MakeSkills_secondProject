@@ -3,6 +3,9 @@ import {
     CART_LIST_FAIL,
     CART_LIST_REQUEST,
     CART_LIST_SUCCESS,
+    COURSE_CREATE_REVIEW_FAIL,
+    COURSE_CREATE_REVIEW_REQUEST,
+    COURSE_CREATE_REVIEW_SUCCESS,
     FREE_ENROLLMENT_COURSE_FAIL,
     FREE_ENROLLMENT_COURSE_REQUEST,
     FREE_ENROLLMENT_COURSE_SUCCESS,
@@ -330,7 +333,7 @@ export const startCourseAction = ( slug ) => async ( dispatch, getState ) => {
 
 
 
-export const markLessonCompleteAction = ( courseId, lessonId ) => async ( dispatch, getState ) => {
+export const markLessonCompleteAction = ( courseId, lessonId, note ) => async ( dispatch, getState ) => {
     try{
         dispatch({
             type : MARK_lESSON_COMPLETE_REQUEST
@@ -346,7 +349,7 @@ export const markLessonCompleteAction = ( courseId, lessonId ) => async ( dispat
             }
         }
 
-        const { data } = await axios.post(`/api/students/mark-completed-lesson`,{ courseId, lessonId }, config)
+        const { data } = await axios.post(`/api/students/mark-completed-lesson`,{ courseId, lessonId, note }, config)
 
         dispatch({
             type : MARK_lESSON_COMPLETE_SUCCESS,
@@ -430,6 +433,47 @@ export const provideCertificateAction = ( courseId ) => async ( dispatch, getSta
         })
     }
 }
+
+
+
+export const courseReviewAction = ( courseId, review ) => async ( dispatch, getState ) => {
+    try{
+        dispatch({
+            type : COURSE_CREATE_REVIEW_REQUEST
+        })
+
+        const {
+            userLogin : { userInfo }
+        } = getState()
+
+        const config = {
+            headers : {
+                'Content-Type' : 'application/json',
+                Authorization : `Bearer ${userInfo.token}`
+            }
+        }
+
+        const { data } = await axios.post(`/api/students/course-review${courseId}`,{ review }, config)
+
+        dispatch({
+            type : COURSE_CREATE_REVIEW_SUCCESS,
+        })
+    }catch(error) {
+        dispatch({
+            type : COURSE_CREATE_REVIEW_FAIL,
+            payload :
+            error.response && error.response.data.message ?
+            error.response.data.message :
+            error.message
+        })
+    }
+}
+
+
+
+
+
+
 
 
 

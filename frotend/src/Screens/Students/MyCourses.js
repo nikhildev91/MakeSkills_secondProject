@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
-import { Container, Row, Col } from 'react-bootstrap'
-import { LinkContainer } from 'react-router-bootstrap'
+import { Row } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { loadMyCoursesAction } from '../../Actions/StudentActions/CourseActions'
+import CourseListingCard from '../../Components/Students/CourseListingCard'
 
 const MyCourses = () => {
     const navigate = useNavigate()
@@ -15,36 +15,19 @@ const MyCourses = () => {
     const { courses } = myCoursesList
 
     useEffect(() => {
-        if(!userInfo && !userInfo.isStudent){
+        if(!userInfo || !userInfo.isStudent){
             navigate('/login')
         }
 
         dispatch(loadMyCoursesAction())
     }, [ userInfo ])
   return (
-    <>
-    <Container className='mt-5'>
-      <h1>My Courses</h1>
-      <Row className='mt-4'>
-        {
-          courses && courses.map( course => (
-            <Col md={3}>
-              <div className="card" style={{width : "18rem"}}>
-                <img className="card-img-top" src={course.image} alt={course.title} />
-                <div className="card-body">
-                  <h5 className="card-title">{course.title}</h5>
-                  <p className="card-text text-dark">{course.description}</p>
-                  <LinkContainer to ={ `/start-course/${course.slug}`}>
-                  <a className="btn btn-success">Start Course</a>
-                  </LinkContainer>
-                </div>
-              </div>
-            </Col>
-          ))
-        }
+    <div className='container-fluid p-5' style={{ minHeight : "78vh"}}>
+      <h1 style={{ fontWeight : "bold"}}>My Courses</h1>
+      <Row>
+        <CourseListingCard courses={courses} mycourses={true}/>
       </Row>
-    </Container>
-    </>
+    </div>
   )
 }
 

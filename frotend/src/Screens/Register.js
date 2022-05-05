@@ -12,8 +12,9 @@ const Register = () => {
     const [ email, setEmail ] = useState('')
     const [ password, setPassword ] = useState('')
     const [ confirmPassword, setConfirmPassword ] = useState('')
-    const [ isInstructor, setIsInstructor ] = useState(false)
+    // const [ isInstructor, setIsInstructor ] = useState(false)
     const [ isStudent, setIsStudent ] = useState(false)
+    const [ studentOrInstructor, setStudentOrInstructor ] = useState('')
 
     const [ message, setMessage ] = useState(null)
 
@@ -27,7 +28,7 @@ const Register = () => {
 
     useEffect(()=>{
         if(userInfo){
-            navigate('/')
+            navigate('/plans')
         }else{
             navigate('/register')
         }
@@ -35,6 +36,7 @@ const Register = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        let isInstructor = isStudent ? false : true
         if( password === confirmPassword ){
             dispatch(register(fname, lname, email, isInstructor, isStudent, password))
         } else {
@@ -42,7 +44,8 @@ const Register = () => {
         }
     }
   return (
-    <FormContainer>
+    <div style={{ minHeight : "71vh"}}>
+        <FormContainer>
         <h1>Register New Customer</h1>
         { message && <Message variant='danger'>{message}</Message>}
         { error && <Message variant='danger'>{error}</Message>}
@@ -61,9 +64,12 @@ const Register = () => {
             </Form.Group>
             <Form.Group className='mt-3'>
                 <Form.Label>Register As</Form.Label>
-                <Form.Check className='ms-4' inline type='radio' label="Student"  name='accountType' value={true} onChange={ e => setIsStudent(e.target.value)} />
-                <Form.Check inline type='radio' label="Instructor" name='accountType' value={true} onChange={ e => setIsInstructor(e.target.value)} />
-        </Form.Group>
+                <Form.Check className='ms-4' id='account' inline type='radio' label="Student"  value={isStudent} name='accountType' onClick={ e => {
+                    setIsStudent(true)}} />
+                <Form.Check inline type='radio' id='account' label="Instructor" value={!isStudent} name='accountType' onClick={ e => {
+                    setIsStudent(false)
+                    }} />
+            </Form.Group>
         <Row>
             <Col md={6}>
             <Form.Group className='mt-3'>
@@ -87,6 +93,7 @@ const Register = () => {
             </Col>
         </Row>
     </FormContainer>
+    </div>
   )
 }
 

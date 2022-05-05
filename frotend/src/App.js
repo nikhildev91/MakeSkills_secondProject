@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import NavBar from "./Components/NavBar";
+import Footer from './Components/Footer';
 import Login from './Screens/Login';
 import Register from './Screens/Register';
 import CreateCourse from './Screens/CreateCourse';
@@ -20,6 +21,8 @@ import ManageInstructors from './Screens/Admin/ManageInstructors';
 import ManageStudents from './Screens/Admin/ManageStudents';
 import AdminManageCourse from './Screens/Admin/ManageCourse';
 import SalesReport from './Screens/Admin/SalesReport';
+import Pricing from './Screens/Students/Pricing';
+import Profile from './Screens/Students/Profile';
 function App() {
   return (
     <Router>
@@ -30,6 +33,7 @@ function App() {
 
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
+          <Route path='/plans' element={<Pricing />} />
 
           <Route path='/instructor' element={<InstructorDashboard />} />
           <Route path='/instructor/create-course' element={<CreateCourse />} />
@@ -44,6 +48,7 @@ function App() {
           <Route path='/start-course/:slug' element={<CourseStartPage />} />
           <Route path='/course/:slug' element={<Course />} />
           <Route path='/course-certificate/:slug' element={<CertificatePDF />} />
+          <Route path='/profile' element={<Profile />} />
 
           <Route path='/admin' element={<Dashboard />} />
           <Route path='/admin/manage-courses' element={<AdminManageCourse />} />
@@ -52,6 +57,7 @@ function App() {
           <Route path='/admin/sales-report' element={<SalesReport />} />
         </Routes>
       </main>
+      <Footer />
     </Router>
   );
 }

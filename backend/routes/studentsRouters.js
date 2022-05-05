@@ -12,7 +12,8 @@ import {
     myCourseslist,
     markCompleted,
     listCompleted,
-    provideCertificate
+    provideCertificate,
+    createCourseReview
  } from '../controllers/studentsControllers/courseControllers.js'
 
 
@@ -36,5 +37,8 @@ import {
 
  // provide certificate
  router.post('/provide-certificate', studentProtect, provideCertificate )
+
+ // write reviews
+ router.post('/course-review/:courseid', createCourseReview)
 
 export default router

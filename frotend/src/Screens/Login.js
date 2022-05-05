@@ -32,7 +32,8 @@ const Login = () => {
         dispatch(login(email, password))
     }
   return (
-        <FormContainer>
+      <div style={{ minHeight: "71vh"}}>
+            <FormContainer>
             <h1>Sign In</h1>
             { error && <Message variant="danger">{error}</Message>}
         <Form onSubmit={handleSubmit}>
@@ -53,6 +54,7 @@ const Login = () => {
             </Col>
         </Row>
         </FormContainer>
+      </div>
   )
 }
 

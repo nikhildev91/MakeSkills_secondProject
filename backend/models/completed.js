@@ -9,7 +9,10 @@ const completedSchema = mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref : "Course"
     },
-    lessons : []
+    lessons : [{
+        lesson : '',
+        notes : ''
+    }]
 }, { timestamps : true})
 
 const Completed = mongoose.model('Completed', completedSchema)

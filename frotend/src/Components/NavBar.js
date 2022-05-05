@@ -38,11 +38,11 @@ const NavBar = () => {
         <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
             </NavDropdown>
         <Nav.Link href="#link">Forum</Nav.Link>
-        { userInfo && !userInfo.isPremiumStudent && <Nav.Link href="#home">Pricing</Nav.Link> }
-        { !userInfo && <Nav.Link href="#home">Pricing</Nav.Link>}
+        { userInfo && !userInfo.isPremiumStudent && <LinkContainer to = '/plans'><Nav.Link>Pricing</Nav.Link></LinkContainer> }
+        { !userInfo && <LinkContainer to = '/plans'><Nav.Link>Pricing</Nav.Link></LinkContainer>}
           </Nav>
-      }
-      {/* {
+  
+      /* {
         userInfo && userInfo.isStudent &&
       <Nav className="me-auto">
         <NavDropdown title="Dropdown" id="basic-nav-dropdown">
@@ -75,8 +75,8 @@ const NavBar = () => {
         <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
             </NavDropdown>
         <Nav.Link href="#link">Forum</Nav.Link>
-        { userInfo && !userInfo.isPremiumStudent && <Nav.Link href="#home">Pricing</Nav.Link> }
-        { !userInfo && <Nav.Link href="#home">Pricing</Nav.Link>}
+        { userInfo && !userInfo.isPremiumStudent &&  <LinkContainer to = '/plans'><Nav.Link>Pricing</Nav.Link></LinkContainer> }
+        { !userInfo &&  <LinkContainer to = '/plans'><Nav.Link>Pricing</Nav.Link></LinkContainer>}
           </Nav>
         <Nav className="ms-auto">
         <LinkContainer to='/login'>
@@ -96,9 +96,8 @@ const NavBar = () => {
         <Nav.Link>Cart</Nav.Link>
         </LinkContainer>
         <NavDropdown title={userInfo.fname} id="basic-nav-dropdown" className='' style={{ marginRight : "120px"}}>
-          <NavDropdown.Item href="#action/3.1">Profile</NavDropdown.Item>
+          <LinkContainer to='/profile'><NavDropdown.Item>Profile</NavDropdown.Item></LinkContainer>
           <NavDropdown.Item href="#action/3.2"><LinkContainer to='/my-courses'><span>My Courses </span></LinkContainer></NavDropdown.Item>
-          <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
           <NavDropdown.Divider />
           <NavDropdown.Item onClick={handlelogout}>Logout</NavDropdown.Item>
         </NavDropdown>
@@ -108,7 +107,7 @@ const NavBar = () => {
         userInfo && userInfo.isInstructor &&
       <Nav className="ms-auto">
         <NavDropdown title={userInfo.fname} id="basic-nav-dropdown" style={{ marginRight : "120px"}}>
-          <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+        <LinkContainer to='/profile'><NavDropdown.Item>Profile</NavDropdown.Item></LinkContainer>
           <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
           <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
           <NavDropdown.Divider />
